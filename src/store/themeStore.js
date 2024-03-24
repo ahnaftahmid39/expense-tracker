@@ -7,11 +7,6 @@ export const useThemeStore = create(
     (set, get) => ({
       theme: "light",
       setTheme: (theme) => {
-        const { THEME_DARK, THEME_LIGHT } = THEME_TYPES;
-        const root = window.document.documentElement;
-        const isDark = theme === THEME_DARK;
-        root.classList.remove(isDark ? THEME_LIGHT : THEME_DARK);
-        root.classList.add(theme);
         set({ theme });
       },
       toggleTheme: () => {
