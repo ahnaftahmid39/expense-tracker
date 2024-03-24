@@ -11,13 +11,14 @@ export const useThemeStore = create(
       },
       toggleTheme: () => {
         const { theme } = get();
-        const { THEME_DARK, THEME_LIGHT } = THEME_TYPES;
-        const newTheme = theme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT;
+        const { DARK, LIGHT } = THEME_TYPES;
+        const newTheme = theme === LIGHT ? DARK : LIGHT;
         get().setTheme(newTheme);
       },
     }),
     {
       name: "theme-storage",
     }
+    // { partialize: (state) => ({ theme: state.theme }) }
   )
 );
