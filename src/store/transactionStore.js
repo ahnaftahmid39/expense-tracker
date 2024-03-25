@@ -97,6 +97,8 @@ export const useTransactionStore = create(
           },
         }));
       },
+
+      setShouldPersist: (val) => set(() => ({ shouldPersist: val })),
     }),
 
     {

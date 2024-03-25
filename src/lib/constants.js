@@ -13,18 +13,22 @@ const transactionFields = Object.freeze({
 });
 
 const defaultCategories = Object.freeze({
-  food: "food",
-  transport: "transport",
-  rent: "rent",
-  bill: "bill",
-  health: "health",
-  clothing: "clothing",
-  travel: "travel",
-  education: "education",
-  children: "children",
-  tax: "tax",
-  debt: "debt",
-  charity: "charity",
+  food: "Food",
+  orderFood: "Order Food",
+  entertainment: "Entertainment",
+  transport: "Transport",
+  rent: "Rent",
+  bill: "Bill",
+  health: "Health",
+  clothes: "Clothes",
+  travel: "Travel",
+  education: "Education",
+  children: "Children",
+  tax: "Tax",
+  debt: "Debt",
+  charity: "Charity",
+  medicine: "Medicine",
+  grocery: "Grocery",
 });
 
 const defaultCategoriesArray = Object.keys(defaultCategories);

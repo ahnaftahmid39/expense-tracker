@@ -1,15 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { CardWithForm } from "@/components/CardWithForm";
 import { useThemeStore } from "./store/themeStore";
 import { THEME_TYPES } from "./lib/constants";
 import { useEffect } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import Body from "./components/Body";
+import ControlBar from "./components/ControlBar";
 
 function App() {
   const theme = useThemeStore((state) => state.theme);
@@ -25,8 +19,8 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col p-4 bg-slate-50 items-center container h-dvh">
-        <Button onClick={toggleTheme}>ChangeTheme</Button>
+      <div className="flex flex-col p-4 items-center container h-lvh">
+        <ControlBar />
         <Body />
       </div>
     </>
