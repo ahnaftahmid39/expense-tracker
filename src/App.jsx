@@ -4,7 +4,9 @@ import { useEffect } from "react";
 import Body from "./components/Body";
 import ControlBar from "@/components/ControlBar";
 import { Toaster } from "./components/ui/toaster";
-
+import { toast } from "./components/ui/use-toast";
+import { Button } from "./components/ui/button";
+import { cn } from "./lib/utils";
 
 function App() {
   const theme = useThemeStore((state) => state.theme);
@@ -19,7 +21,7 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col p-4 items-center container h-lvh">
+      <div className="flex flex-col p-4 items-center  container h-lvh">
         <ControlBar />
         <Body />
         <Toaster />

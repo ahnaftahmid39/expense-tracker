@@ -78,7 +78,8 @@ export function AddOrEditTransaction({ label = "Add" }) {
     addTransaction(transaction);
     closeModal();
     toast({
-      title: "Added successfully",
+      title: "Sucess",
+      duration: "2000",
     });
   };
 
