@@ -8,19 +8,13 @@ import { useTransactionStore } from "@/store/transactionStore";
 const Body = () => {
   const addTransaction = useTransactionStore((state) => state.addTransaction);
   const transactions = useTransactionStore((state) => state.transactions);
-
-  useEffect(() => {
-    mockTransactions.forEach((t) => {
-      addTransaction(t);
-    });
-  }, []);
-
+  console.log(transactions);
   return (
     <div className={"flex flex-col lg:flex-row w-full g-4 p-4"}>
       {/* <Charts /> */}
-      <TransactionList transactions={mockTransactions} />
+      <TransactionList transactions={transactions} />
     </div>
   );
 };
-
+2;
 export default Body;

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { CirclePlus, History, Moon, Sun, UserRound } from "lucide-react";
 import { THEME_TYPES } from "@/lib/constants";
+import { AddOrEditTransaction } from "./add-or-edit-transaction/AddOrEditTransaction";
 
 const ControlBar = () => {
   const theme = useThemeStore((state) => state.theme);
@@ -15,10 +16,7 @@ const ControlBar = () => {
   return (
     <NavigationMenu className="list-none gap-1 fixed backdrop-blur-xl bottom-8 border border-solid rounded-lg p-2">
       <NavigationMenuItem>
-        <Button variant={"ghost"} className={"md:gap-2"}>
-          <CirclePlus />
-          <span className="hidden md:inline">Add</span>
-        </Button>
+        <AddOrEditTransaction />
       </NavigationMenuItem>
       <NavigationMenuItem>
         <Button className={"md:gap-2"} variant={"ghost"}>

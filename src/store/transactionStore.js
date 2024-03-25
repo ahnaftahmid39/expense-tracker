@@ -102,6 +102,7 @@ export const useTransactionStore = create(
     }),
 
     {
+      name: "transaction-store",
       partialize: (state) => {
         let persistStates = {
           shouldPersist: state.shouldPersist,

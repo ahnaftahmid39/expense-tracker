@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
 import { useThemeStore } from "./store/themeStore";
 import { THEME_TYPES } from "./lib/constants";
 import { useEffect } from "react";
 import Body from "./components/Body";
-import ControlBar from "./components/ControlBar";
+import ControlBar from "@/components/ControlBar";
+import { Toaster } from "./components/ui/toaster";
+
 
 function App() {
   const theme = useThemeStore((state) => state.theme);
-  const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
   useEffect(() => {
     const { DARK, LIGHT } = THEME_TYPES;
@@ -22,6 +22,7 @@ function App() {
       <div className="flex flex-col p-4 items-center container h-lvh">
         <ControlBar />
         <Body />
+        <Toaster />
       </div>
     </>
   );

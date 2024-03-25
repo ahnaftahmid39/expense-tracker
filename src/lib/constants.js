@@ -6,10 +6,19 @@ const THEME_TYPES = {
 const transactionFields = Object.freeze({
   id: "id",
   category: "category",
-  method: "payment method",
+  method: "method",
   description: "description",
   amount: "amount",
   createdAt: "createdAt",
+});
+
+const transactionFieldsLabelMapper = Object.freeze({
+  id: "ID",
+  category: "Category",
+  method: "Payment Method",
+  description: "Description",
+  amount: "Amount",
+  createdAt: "Date added",
 });
 
 const defaultCategories = Object.freeze({
@@ -36,6 +45,7 @@ const defaultCategoriesArray = Object.keys(defaultCategories);
 export {
   THEME_TYPES,
   transactionFields,
+  transactionFieldsLabelMapper,
   defaultCategories,
   defaultCategoriesArray,
 };

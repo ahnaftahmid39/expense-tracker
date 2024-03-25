@@ -16,27 +16,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { transactionFields } from "@/lib/constants";
+import {
+  transactionFields,
+  transactionFieldsLabelMapper,
+} from "@/lib/constants";
 
 const TransactionList = ({ transactions }) => {
   return (
     <div className="flex flex-col w-full h-[80svh] overflow-hidden rounded-lg border ">
       <Table className="hidden md:table">
         <TableHeader className="*:capitalize">
-          <TableHead>{transactionFields.category}</TableHead>
-          <TableHead>{transactionFields.description}</TableHead>
-          <TableHead>{transactionFields.method}</TableHead>
-          <TableHead>{transactionFields.createdAt}</TableHead>
-          <TableHead className="text-right">
-            {transactionFields.amount}
-          </TableHead>
+          <TableRow>
+            <TableHead>{transactionFieldsLabelMapper.category}</TableHead>
+            <TableHead>{transactionFieldsLabelMapper.description}</TableHead>
+            <TableHead>{transactionFieldsLabelMapper.method}</TableHead>
+            <TableHead>{transactionFieldsLabelMapper.createdAt}</TableHead>
+            <TableHead className="text-right">
+              {transactionFields.amount}
+            </TableHead>
+          </TableRow>
         </TableHeader>
         <TableBody>
           {transactions.map((t) => {
             return (
               <TableRow key={t.id} className="odd:bg-secondary">
                 <TableCell className="capitalize">{t.category}</TableCell>
-                <TableCell>{t.description}</TableCell>
+                <TableCell>
+                  {t.description === "" ? "--" : t.description}
+                </TableCell>
                 <TableCell>
                   <Badge>{t.method}</Badge>
                 </TableCell>
