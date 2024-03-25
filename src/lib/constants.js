@@ -6,7 +6,7 @@ const THEME_TYPES = {
 const transactionFields = Object.freeze({
   id: "id",
   category: "category",
-  method: "method",
+  method: "payment method",
   description: "description",
   amount: "amount",
   createdAt: "createdAt",
