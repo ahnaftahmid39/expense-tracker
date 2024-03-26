@@ -15,3 +15,4 @@
 - [ ] authentication?
 - [ ] predefined categories
 - [ ] user created categories
+- [ ] reduce bundle size, use dynamic import where can

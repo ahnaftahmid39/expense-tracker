@@ -123,7 +123,7 @@ export function AddOrEditTransaction({
           </Button>
         ) : (
           <Button variant="ghost" className={"p-2"}>
-            <Edit size={20} />
+            <Edit size={20} strokeWidth={1.5} />
             {label !== "" && <span className="hidden  md:inline">{label}</span>}
           </Button>
         )}

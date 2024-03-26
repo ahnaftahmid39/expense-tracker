@@ -23,7 +23,7 @@ const DeleteAlert = ({ tid }) => {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="ghost" className="p-2">
-            <Trash size={20} />
+            <Trash size={20} strokeWidth={1.5} />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
