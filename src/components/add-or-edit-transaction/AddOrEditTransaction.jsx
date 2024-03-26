@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { CirclePlus, Edit } from "lucide-react";
+import { CirclePlus, Edit, PlusCircle } from "lucide-react";
 
 import {
   defaultCategories,
@@ -83,8 +83,6 @@ export function AddOrEditTransaction({
     },
   });
 
-  console.log(form.watch("method"));
-
   const onSubmit = (values) => {
     let transaction = {
       ...values,
@@ -118,10 +116,17 @@ export function AddOrEditTransaction({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange} defaultOpen>
       <DialogTrigger asChild>
-        <Button variant={"ghost"} className={"md:gap-2"}>
-          {isAdd ? <CirclePlus /> : <Edit />}
-          {label !== "" && <span className="hidden  md:inline">{label}</span>}
-        </Button>
+        {isAdd ? (
+          <Button variant={"ghost"} className={"md:gap-2"}>
+            <CirclePlus />
+            {label !== "" && <span className="hidden  md:inline">{label}</span>}
+          </Button>
+        ) : (
+          <Button variant="ghost" className={"p-2"}>
+            <Edit size={20} />
+            {label !== "" && <span className="hidden  md:inline">{label}</span>}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-secondary max-h-[85svh] overflow-auto sm:rounded-lg">
         <DialogHeader>
@@ -243,11 +248,7 @@ export function AddOrEditTransaction({
               )}
             />
             <DialogFooter>
-              <Button
-                onClick={form.reset}
-                type="button"
-                variant="ghost"
-              >
+              <Button onClick={form.reset} type="button" variant="ghost">
                 Reset
               </Button>
               <Button type="submit">Submit</Button>

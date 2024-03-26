@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -45,7 +46,7 @@ const TransactionList = ({ transactions }) => {
         <TableBody>
           {transactions.map((t) => {
             return (
-              <TableRow key={t.id} className="odd:bg-secondary">
+              <TableRow key={t.id} className="odd:bg-card">
                 <TableCell className="capitalize">{t.category}</TableCell>
                 <TableCell>
                   {t.description === "" ? "--" : t.description}
@@ -98,6 +99,14 @@ const TransactionList = ({ transactions }) => {
                   )}
                 </div>
               </CardContent>
+              <CardFooter>
+                <AddOrEditTransaction
+                  isAdd={false}
+                  label=""
+                  defaultTransaction={t}
+                />
+                <DeleteAlert tid={t.id} />
+              </CardFooter>
             </Card>
           );
         })}
