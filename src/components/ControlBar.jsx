@@ -14,7 +14,7 @@ const ControlBar = () => {
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
   return (
-    <NavigationMenu className="list-none gap-1 fixed backdrop-blur-xl bottom-8 border border-solid rounded-lg p-2">
+    <NavigationMenu className="list-none gap-1 fixed backdrop-blur-xl bottom-8 border-2 bg-secondary border-solid rounded-lg p-2">
       <NavigationMenuItem>
         <AddOrEditTransaction />
       </NavigationMenuItem>

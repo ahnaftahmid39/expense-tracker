@@ -23,7 +23,7 @@ import {
 
 const TransactionList = ({ transactions }) => {
   return (
-    <div className="flex flex-col w-full h-[80svh] overflow-hidden rounded-lg border ">
+    <div className="flex flex-col w-full md:h-[80svh] overflow-hidden rounded-lg border ">
       <Table className="hidden md:table">
         <TableHeader className="*:capitalize">
           <TableRow>
@@ -59,7 +59,7 @@ const TransactionList = ({ transactions }) => {
           })}
         </TableBody>
       </Table>
-      <div className="flex flex-col overflow-auto">
+      <div className="flex flex-col">
         {transactions.map((t) => {
           return (
             <Card

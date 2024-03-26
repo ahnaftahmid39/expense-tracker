@@ -66,7 +66,6 @@ export function AddOrEditTransaction({ label = "Add" }) {
       [transactionFields.amount]: 0,
     },
   });
-
   const onSubmit = (values) => {
     let transaction = {
       ...values,
@@ -79,7 +78,10 @@ export function AddOrEditTransaction({ label = "Add" }) {
     closeModal();
     toast({
       title: "Sucess",
-      duration: "2000",
+      description: "Added a transaction",
+      duration: "3000",
+      variant: "success",
+      titleClass: "text-green-500",
     });
   };
 
@@ -88,7 +90,7 @@ export function AddOrEditTransaction({ label = "Add" }) {
       <DialogTrigger asChild>
         <Button variant={"ghost"} className={"md:gap-2"}>
           <CirclePlus />
-          <span className="hidden md:inline">{label}</span>
+          <span className="hidden  md:inline">{label}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-secondary max-h-[85svh] overflow-auto sm:rounded-lg">
