@@ -1,19 +1,22 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, Edit } from "lucide-react";
 
-import { transactionFields } from "@/lib/constants";
-import { useEffect, useState } from "react";
+import {
+  defaultCategories,
+  defaultPaymentMethods,
+  transactionFields,
+  transactionFieldsLabelMapper,
+} from "@/lib/constants";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,6 +32,15 @@ import {
 import { useTransactionStore } from "@/store/transactionStore";
 import { uid } from "uid";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const transactionSchema = z.object({
   [transactionFields.category]: z.string().min(2).max(20),
@@ -36,7 +48,11 @@ const transactionSchema = z.object({
   [transactionFields.method]: z.string().min(1, "Method field cannot be empty"),
   [transactionFields.amount]: z.coerce.number().positive(),
 });
-export function AddOrEditTransaction({ label = "Add" }) {
+export function AddOrEditTransaction({
+  label = "Add",
+  isAdd = true,
+  defaultTransaction,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
 
@@ -56,29 +72,43 @@ export function AddOrEditTransaction({ label = "Add" }) {
   const updateTransaction = useTransactionStore(
     (state) => state.updateTransaction
   );
-
+  console.log(defaultTransaction);
   const form = useForm({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      [transactionFields.category]: "",
-      [transactionFields.description]: "",
-      [transactionFields.method]: "",
-      [transactionFields.amount]: 0,
+      [transactionFields.category]: defaultTransaction?.category || "",
+      [transactionFields.description]: defaultTransaction?.description || "",
+      [transactionFields.method]: defaultTransaction?.method || "",
+      [transactionFields.amount]: defaultTransaction?.amount || 0,
     },
   });
+
+  console.log(form.watch("method"));
+
   const onSubmit = (values) => {
     let transaction = {
       ...values,
-      [transactionFields.createdAt]: new Date().toISOString(),
     };
-    if (shouldPersist) {
-      transaction = { ...transaction, [transactionFields.id]: uid() };
+    if (isAdd) {
+      transaction = {
+        ...transaction,
+        [transactionFields.createdAt]: new Date().toISOString(),
+      };
+      if (shouldPersist) {
+        transaction = { ...transaction, [transactionFields.id]: uid() };
+      }
+      addTransaction(transaction);
+    } else {
+      transaction = {
+        ...transaction,
+        [transactionFields.id]: defaultTransaction.id,
+      };
+      updateTransaction(transaction);
     }
-    addTransaction(transaction);
     closeModal();
     toast({
       title: "Sucess",
-      description: "Added a transaction",
+      description: `${isAdd ? "Added a" : "Updated"} transaction`,
       duration: "3000",
       variant: "success",
       titleClass: "text-green-500",
@@ -89,8 +119,8 @@ export function AddOrEditTransaction({ label = "Add" }) {
     <Dialog open={isOpen} onOpenChange={handleOpenChange} defaultOpen>
       <DialogTrigger asChild>
         <Button variant={"ghost"} className={"md:gap-2"}>
-          <CirclePlus />
-          <span className="hidden  md:inline">{label}</span>
+          {isAdd ? <CirclePlus /> : <Edit />}
+          {label !== "" && <span className="hidden  md:inline">{label}</span>}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-secondary max-h-[85svh] overflow-auto sm:rounded-lg">
@@ -100,7 +130,7 @@ export function AddOrEditTransaction({ label = "Add" }) {
         <FormWrapper {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 [&_label]:capitalize"
+            className="space-y-6 [&_label]:capitalize [&_span]:capitalize"
           >
             <FormField
               control={form.control}
@@ -108,12 +138,35 @@ export function AddOrEditTransaction({ label = "Add" }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    autoComplete="true"
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {/* <SelectLabel>Category</SelectLabel> */}
+                        {Object.keys(defaultCategories).map((val, idx) => (
+                          <SelectItem
+                            key={idx}
+                            value={val}
+                            className="capitalize"
+                          >
+                            {val}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {/* <FormDescription>
                     Select category of your expense
-                  </FormDescription>
+                  </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -140,10 +193,37 @@ export function AddOrEditTransaction({ label = "Add" }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{transactionFields.method}</FormLabel>
-                  <FormControl>
-                    <Input placeholder="" {...field} />
-                  </FormControl>
-                  <FormDescription>Select a payment method</FormDescription>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    autoComplete="true"
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue
+                          placeholder={`Select a ${transactionFieldsLabelMapper.method}`}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {/* <SelectLabel>
+                          {transactionFieldsLabelMapper.method}
+                        </SelectLabel> */}
+                        {Object.keys(defaultPaymentMethods).map((val, idx) => (
+                          <SelectItem
+                            key={idx}
+                            value={val}
+                            className="capitalize"
+                          >
+                            {val}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {/* <FormDescription>Select a payment method</FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -163,6 +243,13 @@ export function AddOrEditTransaction({ label = "Add" }) {
               )}
             />
             <DialogFooter>
+              <Button
+                onClick={form.reset}
+                type="button"
+                variant="ghost"
+              >
+                Reset
+              </Button>
               <Button type="submit">Submit</Button>
             </DialogFooter>
           </form>

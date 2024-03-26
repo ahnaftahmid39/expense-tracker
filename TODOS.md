@@ -1,9 +1,11 @@
 # HTA
 
-- [ ] separate pages for analytics and recent expenses
-  - [ ] pages: home, analytics, signup
+- [x] separate pages for analytics and recent expenses
+  - [x] pages: home, analytics, signup
 - [ ] more charts
-  - [ ] bar chart, remove pie chart, line chart
+  - [ ] bar chart for yearly summary
+  - [x] remove pie chart
+  - [ ] line chart monthly summary
 - [ ] decorate home page
 - [ ] edit/delete a transaction
 - [ ] different colors for payment methods

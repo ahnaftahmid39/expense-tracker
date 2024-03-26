@@ -1,6 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { transactionFields } from "@/lib/constants";
-import { getRandomHSLAColors } from "@/lib/utils";
 import { useTransactionStore } from "@/store/transactionStore";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 

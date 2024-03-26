@@ -40,6 +40,12 @@ const defaultCategories = Object.freeze({
   grocery: "Grocery",
 });
 
+const defaultPaymentMethods = Object.freeze({
+  cash: "Cash",
+  bkash: "Bkash",
+  card: "Card",
+});
+
 const defaultCategoriesArray = Object.keys(defaultCategories);
 
 const routes = {
@@ -54,5 +60,6 @@ export {
   transactionFieldsLabelMapper,
   defaultCategories,
   defaultCategoriesArray,
+  defaultPaymentMethods,
   routes,
 };

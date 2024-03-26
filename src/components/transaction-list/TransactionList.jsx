@@ -20,6 +20,11 @@ import {
   transactionFields,
   transactionFieldsLabelMapper,
 } from "@/lib/constants";
+import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
+import { Edit } from "lucide-react";
+import { PopoverContent } from "../ui/popover";
+import { AddOrEditTransaction } from "../add-or-edit-transaction/AddOrEditTransaction";
+import DeleteAlert from "../add-or-edit-transaction/DeleteAlert";
 
 const TransactionList = ({ transactions }) => {
   return (
@@ -34,6 +39,7 @@ const TransactionList = ({ transactions }) => {
             <TableHead className="text-right">
               {transactionFields.amount}
             </TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -54,6 +60,14 @@ const TransactionList = ({ transactions }) => {
                   )}
                 </TableCell>
                 <TableCell className="text-right">{t.amount}</TableCell>
+                <TableCell className="text-right">
+                  <AddOrEditTransaction
+                    isAdd={false}
+                    label=""
+                    defaultTransaction={t}
+                  />
+                  <DeleteAlert tid={t.id} />
+                </TableCell>
               </TableRow>
             );
           })}

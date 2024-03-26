@@ -22,12 +22,13 @@ export const useTransactionStore = create(
       removeTransaction: (transactionId) => {
         set((state) => ({
           transactions: state.transactions.filter(
-            (t) => t.id === transactionId
+            (t) => t.id !== transactionId
           ),
         }));
       },
 
       updateTransaction: (transaction) => {
+        console.log(transaction);
         set((state) => ({
           transactions: state.transactions.map((t) =>
             transaction.id === t.id ? { ...t, ...transaction } : t
