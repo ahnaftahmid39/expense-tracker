@@ -1,18 +1,59 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { Pie, Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from "chart.js";
 import { transactionFields } from "@/lib/constants";
 import { getRandomHSLAColors } from "@/lib/utils";
 import { useTransactionStore } from "@/store/transactionStore";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
-ChartJS.register(ArcElement, Tooltip, CategoryScale, LinearScale, BarElement);
+const data = [
+  {
+    name: "Jan",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Feb",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Mar",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Apr",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "May",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Jun",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Jul",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Aug",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Sep",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Oct",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Nov",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+  {
+    name: "Dec",
+    total: Math.floor(Math.random() * 5000) + 1000,
+  },
+];
 
 const Charts = () => {
   const transactions = useTransactionStore((state) => state.transactions);
@@ -25,46 +66,65 @@ const Charts = () => {
     results[t[transactionFields.category]] += t.amount;
   });
 
-  const data = {
-    labels: Object.keys(results),
-    datasets: [
-      {
-        data: Object.values(results),
-        backgroundColor: getRandomHSLAColors(
-          Object.keys(results).length,
-          360,
-          70,
-          80,
-          0.3
-        ),
-        borderColor: getRandomHSLAColors(
-          Object.keys(results).length,
-          360,
-          70,
-          80,
-          0.8
-        ),
-      },
-    ],
-  };
+  // const data = {
+  //   labels: Object.keys(results),
+  //   datasets: [
+  //     {
+  //       data: Object.values(results),
+  //       backgroundColor: getRandomHSLAColors(
+  //         Object.keys(results).length,
+  //         360,
+  //         70,
+  //         80,
+  //         0.3
+  //       ),
+  //       borderColor: getRandomHSLAColors(
+  //         Object.keys(results).length,
+  //         360,
+  //         70,
+  //         80,
+  //         0.8
+  //       ),
+  //     },
+  //   ],
+  // };
 
-  const options = {
-    responsive: true,
-  };
+  // const options = {
+  //   responsive: true,
+  // };
 
   return (
-    <div className="w-full sm:w-1/2 lg:w-1/3 flex flex-col gap-2">
-      <div className="w-10/12 flex items-center ">
-        <Bar data={data} options={options} />
-      </div>
-    </div>
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={data}>
+        <XAxis
+          dataKey="name"
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+          tickFormatter={(value) => `$${value}`}
+        />
+        <Bar
+          dataKey="total"
+          fill="currentColor"
+          radius={[4, 4, 0, 0]}
+          className="fill-foreground"
+        />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 
 export const ChartSkeleton = () => {
   return (
-    <>
-      <Skeleton className="w-10/12 h-10/12 aspect-square rounded-full" />
+    <div className="w-[40rem] flex flex-col items-center gap-4">
+      <Skeleton className="w-10/12 h-10/12 aspect-square rounded-full " />
       <div className="flex w-10/12 gap-4 my-2">
         <Skeleton className="w-1/2 h-8" />
         <Skeleton className="w-1/2 h-8" />
@@ -76,7 +136,7 @@ export const ChartSkeleton = () => {
         <Skeleton className="w-1/2 h-8" />
         <Skeleton className="w-1/2 h-8" />
       </div>
-    </>
+    </div>
   );
 };
 
