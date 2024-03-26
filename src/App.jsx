@@ -1,12 +1,13 @@
 import { useThemeStore } from "./store/themeStore";
 import { THEME_TYPES } from "./lib/constants";
 import { useEffect } from "react";
-import Body from "./components/Body";
 import ControlBar from "@/components/ControlBar";
 import { Toaster } from "./components/ui/toaster";
-import { toast } from "./components/ui/use-toast";
-import { Button } from "./components/ui/button";
-import { cn } from "./lib/utils";
+
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/home";
+import AuthenticationPage from "./pages/auth";
+import Analytics from "./pages/analytics";
 
 function App() {
   const theme = useThemeStore((state) => state.theme);
@@ -21,10 +22,14 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col p-4 items-center  container h-lvh">
+      <div className="flex flex-col p-4 items-center container h-lvh">
         <ControlBar />
-        <Body />
         <Toaster />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<AuthenticationPage />} />
+          <Route path="/analytics" element={<Analytics />} />
+        </Routes>
       </div>
     </>
   );

@@ -5,24 +5,29 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { CirclePlus, History, Moon, Sun, UserRound } from "lucide-react";
+import {
+  AreaChart,
+  CirclePlus,
+  History,
+  Home,
+  Moon,
+  Sun,
+  UserRound,
+} from "lucide-react";
 import { THEME_TYPES } from "@/lib/constants";
 import { AddOrEditTransaction } from "./add-or-edit-transaction/AddOrEditTransaction";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Separator } from "@/components/ui/separator";
 
 const ControlBar = () => {
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const navigate = useNavigate();
 
   return (
-    <NavigationMenu className="list-none gap-1 fixed backdrop-blur-xl bottom-8 border-2 bg-secondary border-solid rounded-lg p-2">
+    <NavigationMenu className="list-none gap-1 fixed backdrop-blur-xl bottom-8 border-2 border-solid rounded-lg p-2">
       <NavigationMenuItem>
         <AddOrEditTransaction />
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <Button className={"md:gap-2"} variant={"ghost"}>
-          <History />
-          <span className="hidden md:inline">History</span>
-        </Button>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <Button className={"md:gap-2"} onClick={toggleTheme} variant={"ghost"}>
@@ -43,10 +48,42 @@ const ControlBar = () => {
           )}
         </Button>
       </NavigationMenuItem>
+      <Separator orientation={"vertical"} className={"h-[24px]"} />
       <NavigationMenuItem>
-        <Button className={"md:gap-2"} variant={"ghost"}>
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+          className={"md:gap-2"}
+          variant={"ghost"}
+        >
+          <Home />
+          <span className="hidden md:inline">Home</span>
+        </Button>
+      </NavigationMenuItem>
+
+      <NavigationMenuItem>
+        <Button
+          onClick={() => {
+            navigate("auth");
+          }}
+          className={"md:gap-2"}
+          variant={"ghost"}
+        >
           <UserRound />
           <span className="hidden md:inline">Auth</span>
+        </Button>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <Button
+          onClick={() => {
+            navigate("analytics");
+          }}
+          className={"md:gap-2"}
+          variant={"ghost"}
+        >
+          <AreaChart />
+          <span className="hidden md:inline">Analytics</span>
         </Button>
       </NavigationMenuItem>
     </NavigationMenu>

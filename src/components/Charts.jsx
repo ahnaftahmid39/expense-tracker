@@ -10,10 +10,12 @@ import {
 } from "chart.js";
 import { transactionFields } from "@/lib/constants";
 import { getRandomHSLAColors } from "@/lib/utils";
+import { useTransactionStore } from "@/store/transactionStore";
 
 ChartJS.register(ArcElement, Tooltip, CategoryScale, LinearScale, BarElement);
 
-const Charts = ({ transactions }) => {
+const Charts = () => {
+  const transactions = useTransactionStore((state) => state.transactions);
   // get all the categories
   const results = {};
   transactions.forEach((t) => {
@@ -49,7 +51,7 @@ const Charts = ({ transactions }) => {
   const options = {
     responsive: true,
   };
-  
+
   return (
     <div className="w-full sm:w-1/2 lg:w-1/3 flex flex-col gap-2">
       <div className="w-10/12 flex items-center ">

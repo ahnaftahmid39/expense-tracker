@@ -42,10 +42,17 @@ const defaultCategories = Object.freeze({
 
 const defaultCategoriesArray = Object.keys(defaultCategories);
 
+const routes = {
+  home: "/",
+  auth: "/auth",
+  analytics: "/analytics",
+};
+
 export {
   THEME_TYPES,
   transactionFields,
   transactionFieldsLabelMapper,
   defaultCategories,
   defaultCategoriesArray,
+  routes,
 };
