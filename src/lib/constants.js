@@ -52,6 +52,7 @@ const routes = {
   home: "/",
   auth: "/auth",
   analytics: "/analytics",
+  all: "/all",
 };
 
 export {

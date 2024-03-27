@@ -21,9 +21,6 @@ import {
   transactionFields,
   transactionFieldsLabelMapper,
 } from "@/lib/constants";
-import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
-import { Edit } from "lucide-react";
-import { PopoverContent } from "../ui/popover";
 import { AddOrEditTransaction } from "../add-or-edit-transaction/AddOrEditTransaction";
 import DeleteAlert from "../add-or-edit-transaction/DeleteAlert";
 
@@ -61,7 +58,7 @@ const TransactionList = ({ transactions }) => {
                   )}
                 </TableCell>
                 <TableCell className="text-right">{t.amount}</TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right flex justify-end">
                   <AddOrEditTransaction
                     isAdd={false}
                     label=""

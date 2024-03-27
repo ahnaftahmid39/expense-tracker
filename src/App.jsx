@@ -1,5 +1,5 @@
 import { useThemeStore } from "./store/themeStore";
-import { THEME_TYPES } from "./lib/constants";
+import { THEME_TYPES, routes } from "./lib/constants";
 import { useEffect } from "react";
 import ControlBar from "@/components/ControlBar";
 import { Toaster } from "./components/ui/toaster";
@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import AuthenticationPage from "./pages/auth";
 import Analytics from "./pages/analytics";
+import Viewall from "./pages/viewall";
 
 function App() {
   const theme = useThemeStore((state) => state.theme);
@@ -26,9 +27,10 @@ function App() {
         <ControlBar />
         <Toaster />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<AuthenticationPage />} />
-          <Route path="/analytics" element={<Analytics />} />
+          <Route path={routes.home} element={<Home />} />
+          <Route path={routes.auth} element={<AuthenticationPage />} />
+          <Route path={routes.analytics} element={<Analytics />} />
+          <Route path={routes.all} element={<Viewall />} />
         </Routes>
       </div>
     </>

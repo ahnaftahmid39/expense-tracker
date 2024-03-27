@@ -4,17 +4,19 @@ import {
   NavigationMenuItem,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { capitalizeFirstLetter } from "@/lib/utils";
+import { capitalizeFirstLetter, cn } from "@/lib/utils";
 import {
   AreaChart,
   CirclePlus,
   History,
   Home,
+  List,
+  ListOrdered,
   Moon,
   Sun,
   UserRound,
 } from "lucide-react";
-import { THEME_TYPES } from "@/lib/constants";
+import { THEME_TYPES, routes } from "@/lib/constants";
 import { AddOrEditTransaction } from "./add-or-edit-transaction/AddOrEditTransaction";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
@@ -26,7 +28,7 @@ const ControlBar = () => {
   const { pathname } = useLocation();
 
   return (
-    <NavigationMenu className="list-none gap-1 fixed backdrop-blur-xl bottom-8 border-2 border-solid rounded-lg p-2 [&_span]:leading-[1.8rem]">
+    <NavigationMenu className="list-none gap-1 fixed bg-background bottom-4 border-2 border-solid rounded-lg p-2">
       <NavigationMenuItem>
         <AddOrEditTransaction />
       </NavigationMenuItem>
@@ -55,9 +57,13 @@ const ControlBar = () => {
           onClick={() => {
             navigate("/");
           }}
-          className={
-            "md:gap-2 after:absolute after:h-2 flex after:bottom-2 after:bg-primary"
-          }
+          className={cn(
+            "md:gap-2 after:absolute after:h-2 flex after:bottom-2 after:bg-primary",
+            pathname === routes.home
+              ? // 0 1px 0 0 red
+                "text-primary"
+              : ""
+          )}
           variant={"ghost"}
         >
           <Home />
@@ -68,9 +74,28 @@ const ControlBar = () => {
       <NavigationMenuItem>
         <Button
           onClick={() => {
+            navigate("/all");
+          }}
+          className={cn(
+            "md:gap-2 after:absolute after:h-2 flex after:bottom-2 after:bg-primary",
+            pathname === routes.all ? "text-primary" : ""
+          )}
+          variant={"ghost"}
+        >
+          <List />
+          <span className="hidden md:inline self-center">View All</span>
+        </Button>
+      </NavigationMenuItem>
+
+      <NavigationMenuItem>
+        <Button
+          onClick={() => {
             navigate("auth");
           }}
-          className={"md:gap-2"}
+          className={cn(
+            "md:gap-2",
+            pathname === routes.auth ? "text-primary" : ""
+          )}
           variant={"ghost"}
         >
           <UserRound />
@@ -82,7 +107,10 @@ const ControlBar = () => {
           onClick={() => {
             navigate("analytics");
           }}
-          className={"md:gap-2"}
+          className={cn(
+            "md:gap-2",
+            pathname === routes.analytics ? "text-primary" : ""
+          )}
           variant={"ghost"}
         >
           <AreaChart />

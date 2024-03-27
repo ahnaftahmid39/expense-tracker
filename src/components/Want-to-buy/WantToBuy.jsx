@@ -48,12 +48,12 @@ const WantToBuy = () => {
           <Maximize strokeWidth={1} />
         </span>
       </div>
-      <div className="flex flex-col gap-2 border rounded-lg p-2  h-[32vh] overflow-auto">
+      <div className="flex flex-col gap-2 border rounded-lg p-2  h-[40svh] overflow-auto">
         <BuyItem description={"Gotta buy a lamborgini"} amount={120000} />
         <BuyItem description={"Alu potol piaz"} amount={200} />
-        <BuyItem description={"Gorur dud 2 kg"} amount={200} />
-        <BuyItem description={"Gorur dud 2 kg"} amount={200} />
-        <BuyItem description={"Gorur dud 2 kg"} amount={200} />
+        <BuyItem description={"chocolate"} amount={10} />
+        <BuyItem description={"gpu kinbo"} amount={120000} />
+        <BuyItem description={"boi"} amount={120} />
       </div>
       <Button className="w-full mt-auto" variant="outline">
         Add one
