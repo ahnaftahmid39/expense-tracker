@@ -24,7 +24,7 @@ export const BuyItem = ({ description, amount, className, ...props }) => {
             onCheckedChange={setChecked}
             className="rounded-[4px] self-center box-border"
           />
-          <span className="text-muted-foreground">Have spent</span>
+          <span className="text-muted-foreground">Spent</span>
         </div>
         <Button
           variant="ghost"

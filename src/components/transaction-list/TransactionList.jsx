@@ -26,7 +26,7 @@ import DeleteAlert from "../add-or-edit-transaction/DeleteAlert";
 
 const TransactionList = ({ transactions }) => {
   return (
-    <div className="flex flex-col w-full md:h-[80svh] overflow-hidden rounded-lg border ">
+    <div className="flex flex-col w-full mb-8 md:mb-0 overflow-hidden rounded-lg border ">
       <Table className="hidden md:table">
         <TableHeader className="*:capitalize">
           <TableRow>

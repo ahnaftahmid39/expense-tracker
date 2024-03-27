@@ -23,8 +23,7 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col p-4 items-center container h-lvh">
-        <ControlBar />
+      <div className="flex flex-col [&>*:nth-child(2)]:flex-1 gap-4 pb-4 items-center container max-h-svh">
         <Toaster />
         <Routes>
           <Route path={routes.home} element={<Home />} />
@@ -32,6 +31,7 @@ function App() {
           <Route path={routes.analytics} element={<Analytics />} />
           <Route path={routes.all} element={<Viewall />} />
         </Routes>
+        <ControlBar className="mt-auto" />
       </div>
     </>
   );
