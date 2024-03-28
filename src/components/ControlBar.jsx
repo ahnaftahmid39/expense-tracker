@@ -21,7 +21,7 @@ const ControlBar = ({ className = "" }) => {
     <div className={cn("sticky bottom-4", className)}>
       <NavigationMenu
         className={
-          "list-none  gap-1 bg-background border shadow-md border-solid rounded-lg p-2"
+          "list-none gap-1 bg-background border shadow border-solid rounded-lg p-2"
         }
       >
         <NavigationMenuItem>
