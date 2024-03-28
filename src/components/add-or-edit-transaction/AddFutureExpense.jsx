@@ -1,11 +1,9 @@
-import { CirclePlus } from "lucide-react";
 import { Button } from "../ui/button";
 import { AddOrEditTransaction } from "./AddOrEditTransaction";
 import { useTransactionStore } from "@/store/transactionStore";
 import { transactionFields } from "@/lib/constants";
 import { uid } from "uid";
 import { toast } from "../ui/use-toast";
-import { useEffect } from "react";
 
 const AddFutureExpense = () => {
   const addWillSpend = useTransactionStore((state) => state.addWillSpend);
@@ -24,14 +22,6 @@ const AddFutureExpense = () => {
       className: "border-primary",
     });
   };
-
-  useEffect(() => {
-    toast({
-      title: "Sucess",
-      description: "Added new 'will spend later'",
-      className: "border-primary",
-    });
-  }, []);
 
   return (
     <AddOrEditTransaction

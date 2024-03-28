@@ -4,7 +4,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useTransactionStore } from "@/store/transactionStore";
-import { AddOrEditTransaction } from "../add-or-edit-transaction/AddOrEditTransaction";
 import AddFutureExpense from "../add-or-edit-transaction/AddFutureExpense";
 
 export const BuyItem = ({
@@ -62,8 +61,9 @@ export const BuyItem = ({
             onCheckedChange={setChecked}
             className="rounded-[4px] self-center box-border"
           />
-          <span className="text-muted-foreground">Spent</span>
+          <span className="text-muted-foreground text-sm">Spent</span>
         </div>
+        <span className="text-primary ml-auto">৳{amount}</span>
         <Button
           onClick={handleRemove}
           variant="ghost"
@@ -72,7 +72,6 @@ export const BuyItem = ({
           <Trash size={20} />
           Remove
         </Button>
-        <span className="text-primary ml-auto">৳{amount}</span>
       </div>
     </div>
   );
@@ -80,7 +79,7 @@ export const BuyItem = ({
 
 const WillSpend = () => {
   const willSpend = useTransactionStore((state) => state.willSpend);
-  console.log(willSpend);
+
   return (
     <div className="flex flex-col flex-1 gap-2 border p-2 rounded-lg">
       <div className="p-4 flex py-2 text-xl justify-between font-medium">

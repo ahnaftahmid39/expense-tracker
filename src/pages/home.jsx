@@ -43,17 +43,17 @@ const Home = () => {
         <div className="flex flex-col p-2 px-4 border rounded-lg">
           <div className=" flex flex-col p-2">
             <span className="text-xl">Monthly Total</span>
-            <span className="text-muted-foreground">
+            <span className="text-muted-foreground text-sm">
               Total expense of this month
             </span>
-            <span className="text-primary font-semibold text-2xl mt-1">৳4500</span>
+            <span className="text-primary font-semibold text-2xl mt-2">৳4500</span>
           </div>
           <div className="p-2 flex flex-col">
             <span className="text-xl">Weekly Total</span>
-            <span className="text-muted-foreground">
+            <span className="text-muted-foreground text-sm">
               Total expense of this month
             </span>
-            <span className="mt-1 text-primary font-semibold text-2xl">৳400</span>
+            <span className="mt-2 text-primary font-semibold text-2xl">৳400</span>
           </div>
         </div>
         <WillSpend />
