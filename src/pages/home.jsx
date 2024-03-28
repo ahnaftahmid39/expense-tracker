@@ -40,7 +40,7 @@ const Home = () => {
             <p className="text-primary font-semibold px-2 text-2xl">৳800</p>
           </CardContent>
         </Card> */}
-        <div className="flex flex-col p-2 px-4 border rounded-lg">
+        <div className="flex flex-col p-2 px-4 border rounded-lg bg-card">
           <div className=" flex flex-col p-2">
             <span className="text-xl">Monthly Total</span>
             <span className="text-muted-foreground text-sm">

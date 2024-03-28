@@ -9,7 +9,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useTransactionStore } from "@/store/transactionStore";
 import { Trash } from "lucide-react";
 
@@ -40,6 +41,7 @@ const DeleteAlert = ({ tid }) => {
               onClick={() => {
                 removeTransaction(tid);
               }}
+              className={buttonVariants({ variant: "destructive" })}
             >
               Continue
             </AlertDialogAction>

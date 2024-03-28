@@ -20,17 +20,24 @@ export const BuyItem = ({
   const addTransaction = useTransactionStore((state) => state.addTransaction);
 
   useEffect(() => {
+    let timeoutId;
     if (checked === true) {
-      removeWillSpend(id);
-      addTransaction({
-        id,
-        category,
-        description,
-        method,
-        amount,
-        createdAt: new Date().toISOString(),
-      });
+      timeoutId = setTimeout(() => {
+        removeWillSpend(id);
+        addTransaction({
+          id,
+          category,
+          description,
+          method,
+          amount,
+          createdAt: new Date().toISOString(),
+        });
+      }, 500);
     }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checked]);
@@ -70,7 +77,6 @@ export const BuyItem = ({
           className="p-0 gap-2 bg-transparent text-muted-foreground  hover:bg-transparent hover:scale-110 transition-transform"
         >
           <Trash size={20} />
-          Remove
         </Button>
       </div>
     </div>
@@ -81,12 +87,12 @@ const WillSpend = () => {
   const willSpend = useTransactionStore((state) => state.willSpend);
 
   return (
-    <div className="flex flex-col flex-1 gap-2 border p-2 rounded-lg">
+    <div className="flex flex-col flex-1 gap-2 bg-card border p-2 rounded-lg">
       <div className="p-4 flex py-2 text-xl justify-between font-medium">
         <span>Will spend later</span>
         <Maximize className="self-center" strokeWidth={1} />
       </div>
-      <div className="flex flex-col gap-2 border rounded-lg p-2  flex-1 overflow-auto">
+      <div className="relative flex flex-col gap-2 bg-background border rounded-lg p-2  flex-1 overflow-auto">
         {willSpend.map((ws) => {
           return (
             <BuyItem
