@@ -2,10 +2,43 @@ import { Link, LucideTrash, Maximize, Trash, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTransactionStore } from "@/store/transactionStore";
+import { AddOrEditTransaction } from "../add-or-edit-transaction/AddOrEditTransaction";
+import AddFutureExpense from "../add-or-edit-transaction/AddFutureExpense";
 
-export const BuyItem = ({ description, amount, className, ...props }) => {
+export const BuyItem = ({
+  id,
+  category,
+  description,
+  method,
+  amount,
+  className,
+  ...props
+}) => {
   const [checked, setChecked] = useState(false);
+  const removeWillSpend = useTransactionStore((state) => state.removeWillSpend);
+  const addTransaction = useTransactionStore((state) => state.addTransaction);
+
+  useEffect(() => {
+    if (checked === true) {
+      removeWillSpend(id);
+      addTransaction({
+        id,
+        category,
+        description,
+        method,
+        amount,
+        createdAt: new Date().toISOString(),
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checked]);
+
+  const handleRemove = () => {
+    removeWillSpend(id);
+  };
 
   return (
     <div
@@ -18,7 +51,12 @@ export const BuyItem = ({ description, amount, className, ...props }) => {
         </p>
       </div>
       <div className="flex gap-4  px-2 items-center">
-        <div className="gap-2 p-0 flex hover:bg-transparent">
+        <div
+          className="gap-2 p-0 flex hover:bg-transparent cursor-pointer"
+          onClick={() => {
+            setChecked(true);
+          }}
+        >
           <Checkbox
             checked={checked}
             onCheckedChange={setChecked}
@@ -27,6 +65,7 @@ export const BuyItem = ({ description, amount, className, ...props }) => {
           <span className="text-muted-foreground">Spent</span>
         </div>
         <Button
+          onClick={handleRemove}
           variant="ghost"
           className="p-0 gap-2 bg-transparent text-muted-foreground  hover:bg-transparent hover:scale-110 transition-transform"
         >
@@ -39,27 +78,32 @@ export const BuyItem = ({ description, amount, className, ...props }) => {
   );
 };
 
-const WantToBuy = () => {
+const WillSpend = () => {
+  const willSpend = useTransactionStore((state) => state.willSpend);
+  console.log(willSpend);
   return (
-    <div className="flex flex-col flex-1 gap-2 border p-2 rounded-lg h-[40vh]">
-      <div className="p-4 flex py-2 text-2xl justify-between font-bold">
-        <span>Will spend</span>
-        <span>
-          <Maximize strokeWidth={1} />
-        </span>
+    <div className="flex flex-col flex-1 gap-2 border p-2 rounded-lg">
+      <div className="p-4 flex py-2 text-xl justify-between font-medium">
+        <span>Will spend later</span>
+        <Maximize className="self-center" strokeWidth={1} />
       </div>
-      <div className="flex flex-col gap-2 border rounded-lg p-2  h-[40svh] overflow-auto">
-        <BuyItem description={"Gotta buy a lamborgini"} amount={120000} />
-        <BuyItem description={"Alu potol piaz"} amount={200} />
-        <BuyItem description={"chocolate"} amount={10} />
-        <BuyItem description={"gpu kinbo"} amount={120000} />
-        <BuyItem description={"boi"} amount={120} />
+      <div className="flex flex-col gap-2 border rounded-lg p-2  flex-1 overflow-auto">
+        {willSpend.map((ws) => {
+          return (
+            <BuyItem
+              amount={ws.amount}
+              method={ws.method}
+              category={ws.category}
+              description={ws.description}
+              id={ws.id}
+              key={ws.id}
+            />
+          );
+        })}
       </div>
-      <Button className="w-full mt-auto" variant="outline">
-        Add one
-      </Button>
+      <AddFutureExpense />
     </div>
   );
 };
 
-export default WantToBuy;
+export default WillSpend;

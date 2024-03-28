@@ -5,12 +5,23 @@ export const useTransactionStore = create(
   persist(
     (set, get) => ({
       transactions: [],
+      willSpend: [],
       filters: [],
       sorters: [],
       shouldPersist: true,
       dateQuery: {
         before: new Date().toISOString(),
         after: new Date(0).toISOString(),
+      },
+
+      addWillSpend: (spend) => {
+        set((state) => ({ willSpend: [...state.willSpend, spend] }));
+      },
+
+      removeWillSpend: (spendId) => {
+        set((state) => ({
+          willSpend: state.willSpend.filter((s) => s.id != spendId),
+        }));
       },
 
       addTransaction: (transaction) => {
@@ -28,7 +39,6 @@ export const useTransactionStore = create(
       },
 
       updateTransaction: (transaction) => {
-        console.log(transaction);
         set((state) => ({
           transactions: state.transactions.map((t) =>
             transaction.id === t.id ? { ...t, ...transaction } : t
@@ -113,6 +123,7 @@ export const useTransactionStore = create(
           persistStates = {
             ...persistStates,
             transactions: state.transactions,
+            willSpend: state.willSpend,
           };
         }
 

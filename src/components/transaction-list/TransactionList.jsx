@@ -21,8 +21,8 @@ import {
   transactionFields,
   transactionFieldsLabelMapper,
 } from "@/lib/constants";
-import { AddOrEditTransaction } from "../add-or-edit-transaction/AddOrEditTransaction";
 import DeleteAlert from "../add-or-edit-transaction/DeleteAlert";
+import UpdateTransaction from "../add-or-edit-transaction/UpdateTransaction";
 
 const TransactionList = ({ transactions }) => {
   return (
@@ -59,11 +59,7 @@ const TransactionList = ({ transactions }) => {
                 </TableCell>
                 <TableCell className="text-right">{t.amount}</TableCell>
                 <TableCell className="text-right flex justify-end">
-                  <AddOrEditTransaction
-                    isAdd={false}
-                    label=""
-                    defaultTransaction={t}
-                  />
+                  <UpdateTransaction transaction={t} />
                   <DeleteAlert tid={t.id} />
                 </TableCell>
               </TableRow>
@@ -97,11 +93,7 @@ const TransactionList = ({ transactions }) => {
                 </div>
               </CardContent>
               <CardFooter>
-                <AddOrEditTransaction
-                  isAdd={false}
-                  label=""
-                  defaultTransaction={t}
-                />
+                <UpdateTransaction transaction={t} />
                 <DeleteAlert tid={t.id} />
               </CardFooter>
             </Card>

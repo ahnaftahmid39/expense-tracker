@@ -29,9 +29,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useTransactionStore } from "@/store/transactionStore";
-import { uid } from "uid";
-import { useToast } from "@/components/ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -48,31 +45,23 @@ const transactionSchema = z.object({
   [transactionFields.method]: z.string().min(1, "Method field cannot be empty"),
   [transactionFields.amount]: z.coerce.number().positive(),
 });
+
 export function AddOrEditTransaction({
-  label = "Add",
-  isAdd = true,
+  title = "Add Transaction",
   defaultTransaction,
+  handleSubmit,
+  children,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const { toast } = useToast();
 
   const closeModal = () => {
     setIsOpen(false);
-  };
-  const openModal = () => {
-    setIsOpen(true);
   };
   const handleOpenChange = (open) => {
     setIsOpen(open);
     if (open) form.reset();
   };
 
-  const shouldPersist = useTransactionStore((state) => state.shouldPersist);
-  const addTransaction = useTransactionStore((state) => state.addTransaction);
-  const updateTransaction = useTransactionStore(
-    (state) => state.updateTransaction
-  );
-  console.log(defaultTransaction);
   const form = useForm({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
@@ -84,53 +73,16 @@ export function AddOrEditTransaction({
   });
 
   const onSubmit = (values) => {
-    let transaction = {
-      ...values,
-    };
-    if (isAdd) {
-      transaction = {
-        ...transaction,
-        [transactionFields.createdAt]: new Date().toISOString(),
-      };
-      if (shouldPersist) {
-        transaction = { ...transaction, [transactionFields.id]: uid() };
-      }
-      addTransaction(transaction);
-    } else {
-      transaction = {
-        ...transaction,
-        [transactionFields.id]: defaultTransaction.id,
-      };
-      updateTransaction(transaction);
-    }
+    handleSubmit(values);
     closeModal();
-    toast({
-      title: "Sucess",
-      description: `${isAdd ? "Added a" : "Updated"} transaction`,
-      duration: "3000",
-      variant: "success",
-      titleClass: "text-green-500",
-    });
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange} defaultOpen>
-      <DialogTrigger asChild>
-        {isAdd ? (
-          <Button variant={"ghost"} className={"md:gap-2"}>
-            <CirclePlus />
-            {label !== "" && <span className="hidden  md:inline">{label}</span>}
-          </Button>
-        ) : (
-          <Button variant="ghost" className={"p-2"}>
-            <Edit size={20} strokeWidth={1.5} />
-            {label !== "" && <span className="hidden  md:inline">{label}</span>}
-          </Button>
-        )}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-secondary max-h-[85svh] overflow-auto sm:rounded-lg">
         <DialogHeader>
-          <DialogTitle>{label} Transaction</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <FormWrapper {...form}>
           <form

@@ -5,21 +5,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
-import {
-  AreaChart,
-  CirclePlus,
-  History,
-  Home,
-  List,
-  ListOrdered,
-  Moon,
-  Sun,
-  UserRound,
-} from "lucide-react";
+import { AreaChart, Home, List, Moon, Sun, UserRound } from "lucide-react";
 import { THEME_TYPES, routes } from "@/lib/constants";
-import { AddOrEditTransaction } from "./add-or-edit-transaction/AddOrEditTransaction";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
+import AddTransaction from "./add-or-edit-transaction/AddTransaction";
 
 const ControlBar = ({ className = "" }) => {
   const theme = useThemeStore((state) => state.theme);
@@ -35,7 +25,7 @@ const ControlBar = ({ className = "" }) => {
         }
       >
         <NavigationMenuItem>
-          <AddOrEditTransaction />
+          <AddTransaction />
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Button
