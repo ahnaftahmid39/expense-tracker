@@ -13,6 +13,15 @@ import {
   getFirstDayFirstMomentOfMonth,
   getLastDayLastMomentOfMonth,
 } from "@/lib/utils";
+import { Input } from "../ui/input";
+import {
+  defaultCategories,
+  defaultPaymentMethods,
+  transactionFields,
+  transactionFieldsLabelMapper,
+} from "@/lib/constants";
+import { Button } from "../ui/button";
+import { Delete } from "lucide-react";
 
 const months = {
   0: "January",
@@ -56,23 +65,52 @@ const QueryControls = () => {
     );
   }, [selectedMonth, selectedYear, setDateQuery]);
 
-  const handleValueChange = (val) => {
+  const handleChangeMonth = (val) => {
     setSelectedMonth(val);
   };
-  const handleValueChangeYear = (val) => {
+  const handleChangeYear = (val) => {
     setSelectedYear(val);
   };
+  const searchText = useTransactionStore((state) => state.searchText);
+  const setSearchText = useTransactionStore((state) => state.setSearchText);
+  const upAddFilter = useTransactionStore((state) => state.upAddFilter);
+  const removeFilter = useTransactionStore((state) => state.removeFilter);
+
+  const handleChangeSearch = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const [category, setCategory] = useState("");
+  const handleChangeCategory = (val) => {
+    setCategory(val);
+    upAddFilter(transactionFields.category, val);
+  };
+
+  const handleRemoveCategoryFilter = () => {
+    setCategory("");
+    removeFilter(transactionFields.category);
+  };
+
+  const [method, setMethod] = useState("");
+  const handleChangeMethod = (val) => {
+    setMethod(val);
+    upAddFilter(transactionFields.method, val);
+  };
+
+  const handleRemoveMethodFilter = () => {
+    setMethod("");
+    removeFilter(transactionFields.method);
+  };
+
   return (
-    <div className="flex gap-2 md:gap-4">
-      {/* <Search />
-      <Filter /> */}
+    <div className="flex flex-col md:flex-row gap-2 md:gap-4">
       <Select
         value={selectedMonth}
-        onValueChange={handleValueChange}
+        onValueChange={handleChangeMonth}
         defaultValue={selectedMonth}
         autoComplete="true"
       >
-        <SelectTrigger className="w-full">
+        <SelectTrigger className="md:max-w-[210px]">
           <SelectValue placeholder="Select Month" />
         </SelectTrigger>
         <SelectContent>
@@ -88,11 +126,11 @@ const QueryControls = () => {
 
       <Select
         value={selectedYear}
-        onValueChange={handleValueChangeYear}
+        onValueChange={handleChangeYear}
         defaultValue={selectedYear}
         autoComplete="true"
       >
-        <SelectTrigger className="w-full">
+        <SelectTrigger className="md:max-w-[180px]">
           <SelectValue placeholder="Select Month" />
         </SelectTrigger>
         <SelectContent>
@@ -100,6 +138,74 @@ const QueryControls = () => {
             {years.map((year, idx) => (
               <SelectItem key={idx} value={year} className="capitalize">
                 {`${year} ${year === currentYear ? "(Current)" : ""}`}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+
+      <Input
+        className="grow"
+        placeholder="Search..."
+        value={searchText}
+        type="text"
+        onChange={handleChangeSearch}
+      />
+
+      <Select
+        value={category}
+        onValueChange={handleChangeCategory}
+        defaultValue={category}
+        autoComplete="true"
+      >
+        <SelectTrigger className="capitalize md:max-w-[200px]">
+          <SelectValue placeholder="Category" />
+        </SelectTrigger>
+        <SelectContent>
+          {category !== "" && (
+            <Button
+              onClick={handleRemoveCategoryFilter}
+              variant="ghost"
+              className="flex gap-2 my-2 w-full "
+            >
+              <Delete />
+              Remove
+            </Button>
+          )}
+          <SelectGroup>
+            {Object.keys(defaultCategories).map((cat, idx) => (
+              <SelectItem key={idx} value={cat} className="capitalize">
+                {cat}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+
+      <Select
+        value={method}
+        onValueChange={handleChangeMethod}
+        defaultValue={method}
+        autoComplete="true"
+      >
+        <SelectTrigger className="capitalize md:max-w-[200px]">
+          <SelectValue placeholder="Payment Method" />
+        </SelectTrigger>
+        <SelectContent>
+          {method !== "" && (
+            <Button
+              onClick={handleRemoveMethodFilter}
+              variant="ghost"
+              className="flex gap-2 my-2 w-full "
+            >
+              <Delete />
+              Remove
+            </Button>
+          )}
+          <SelectGroup>
+            {Object.keys(defaultPaymentMethods).map((cat, idx) => (
+              <SelectItem key={idx} value={cat} className="capitalize">
+                {cat}
               </SelectItem>
             ))}
           </SelectGroup>

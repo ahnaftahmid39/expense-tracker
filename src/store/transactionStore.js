@@ -8,6 +8,7 @@ export const useTransactionStore = create(
       willSpend: [],
       filters: [],
       sorters: [],
+      searchText: "",
       shouldPersist: true,
       dateQuery: {
         before: new Date().toISOString(),
@@ -51,17 +52,39 @@ export const useTransactionStore = create(
       },
 
       addFilter: (
-        fieldName = "status",
-        fieldValue = "pending",
+        fieldName = "category",
+        fieldValue = "Food",
         include = true
       ) => {
         set((state) => ({
           filters: [...state.filters, { fieldName, fieldValue, include }],
         }));
       },
-      removeFilter: (idx) => {
+
+      updateFilter: (fieldName, fieldValue, include = true) => {
+        set((state) => ({
+          filters: state.filters.map((f) => {
+            if (f.fieldName === fieldName) {
+              return { fieldName, fieldValue, include };
+            }
+            return f;
+          }),
+        }));
+      },
+
+      upAddFilter: (fieldName, fieldValue, include = true) => {
+        if (get().filters.find((val, idx) => val.fieldName == fieldName)) {
+          get().updateFilter(fieldName, fieldValue, include);
+        } else {
+          get().addFilter(fieldName, fieldValue, include);
+        }
+      },
+
+      removeFilter: (fieldName) => {
         set((state) => {
-          return { filters: state.filters.filter((_, i) => idx !== i) };
+          return {
+            filters: state.filters.filter((f, i) => f.fieldName !== fieldName),
+          };
         });
       },
       setOneFilter: (

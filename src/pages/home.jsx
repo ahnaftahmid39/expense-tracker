@@ -3,21 +3,72 @@ import { useTransactionStore } from "@/store/transactionStore";
 
 import WillSpend from "@/components/will-spend/WillSpend";
 import QueryControls from "@/components/query-controls/QueryControls";
+import {
+  transactionFields,
+  transactionFieldsComparator,
+} from "@/lib/constants";
 
 const Home = () => {
   const transactions = useTransactionStore((state) => state.transactions);
   const dateQuery = useTransactionStore((state) => state.dateQuery);
+  const filters = useTransactionStore((state) => state.filters);
+  const sorters = useTransactionStore((state) => state.sorters);
+  const searchText = useTransactionStore((state) => state.searchText);
 
-  let filteredTransactions = transactions.sort((a, b) => {
-    return new Date(b.dateAdded) - new Date(a.dateAdded);
-  });
+  let filteredTransactions = [...transactions];
+  // handle search
+  let search = searchText.trim().toLowerCase();
+  if (search !== "") {
+    filteredTransactions = filteredTransactions.filter((transaction) => {
+      const combinedString =
+        transaction[transactionFields.category].toLowerCase() +
+        transaction[transactionFields.description].toLowerCase() +
+        transaction[transactionFields.method].toLowerCase() +
+        transaction[transactionFields.amount].toString();
+      if (combinedString.includes(search)) {
+        return true;
+      }
+
+      return false;
+    });
+  }
 
   // handle dateQuery
   filteredTransactions = filteredTransactions.filter((t) => {
     const addedDate = new Date(t.dateAdded);
-
     return addedDate <= dateQuery.before && addedDate >= dateQuery.after;
   });
+
+  // if no sorters active
+  if (sorters.length === 0) {
+    filteredTransactions.sort((a, b) => {
+      return new Date(b.dateAdded) - new Date(a.dateAdded);
+    });
+  } else {
+    // handle only one for now
+    let sorter = sorters[0];
+    const orderMap = {
+      asc: 1,
+      desc: -1,
+    };
+
+    filteredTransactions.sort((a, b) => {
+      return (
+        orderMap[sorter["order"]] *
+        transactionFieldsComparator[sorter["fieldName"]](a, b)
+      );
+    });
+  }
+
+  // handle multiple filters
+  filters.forEach((fltr) => {
+    filteredTransactions = filteredTransactions.filter((tx) => {
+      return (
+        fltr["include"] === (fltr["fieldValue"] === tx[fltr["fieldName"]])
+      );
+    });
+  });
+
   return (
     <div className="w-full gap-4 flex flex-col">
       <QueryControls />
