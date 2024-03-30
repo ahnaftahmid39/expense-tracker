@@ -42,7 +42,7 @@ const transactionFieldsLabelMapper = Object.freeze({
   dateAdded: "Date added",
 });
 
-const defaultCategories = Object.freeze({
+const categories = {
   food: "Food",
   orderFood: "Order Food",
   entertainment: "Entertainment",
@@ -59,7 +59,14 @@ const defaultCategories = Object.freeze({
   charity: "Charity",
   medicine: "Medicine",
   grocery: "Grocery",
-});
+};
+
+const defaultCategories = Object.keys(categories)
+  .sort()
+  .reduce((obj, key) => {
+    obj[key] = categories[key];
+    return obj;
+  }, {});
 
 const defaultPaymentMethods = Object.freeze({
   cash: "Cash",

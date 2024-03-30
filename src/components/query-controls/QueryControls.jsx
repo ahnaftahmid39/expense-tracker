@@ -75,6 +75,8 @@ const QueryControls = () => {
   const setSearchText = useTransactionStore((state) => state.setSearchText);
   const upAddFilter = useTransactionStore((state) => state.upAddFilter);
   const removeFilter = useTransactionStore((state) => state.removeFilter);
+  const clearSorters = useTransactionStore((state) => state.clearSorters);
+  const clearFilters = useTransactionStore((state) => state.clearFilters);
 
   const handleChangeSearch = (e) => {
     setSearchText(e.target.value);
@@ -100,6 +102,23 @@ const QueryControls = () => {
   const handleRemoveMethodFilter = () => {
     setMethod("");
     removeFilter(transactionFields.method);
+  };
+
+  const handleReset = () => {
+    // local states
+    setSelectedMonth(currentMonthId);
+    setSelectedYear(currentYear);
+    setCategory("");
+    setMethod("");
+
+    // global store
+    clearFilters();
+    clearSorters();
+    setDateQuery(
+      getLastDayLastMomentOfMonth(currentMonthId, currentYear),
+      getFirstDayFirstMomentOfMonth(currentMonthId, currentYear)
+    );
+    setSearchText("");
   };
 
   return (
@@ -143,14 +162,6 @@ const QueryControls = () => {
           </SelectGroup>
         </SelectContent>
       </Select>
-
-      <Input
-        className="grow"
-        placeholder="Search..."
-        value={searchText}
-        type="text"
-        onChange={handleChangeSearch}
-      />
 
       <Select
         value={category}
@@ -211,6 +222,18 @@ const QueryControls = () => {
           </SelectGroup>
         </SelectContent>
       </Select>
+
+      <Input
+        className="grow"
+        placeholder="Search..."
+        value={searchText}
+        type="text"
+        onChange={handleChangeSearch}
+      />
+
+      <Button variant="outline" onClick={handleReset}>
+        Reset
+      </Button>
     </div>
   );
 };

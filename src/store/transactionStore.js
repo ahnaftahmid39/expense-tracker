@@ -118,6 +118,7 @@ export const useTransactionStore = create(
         }));
       },
       setOneSorter: (fieldName = "priority", order = "asc") => {
+        if (fieldName === "") return;
         set(() => ({
           sorters: [{ fieldName, order }],
         }));

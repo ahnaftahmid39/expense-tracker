@@ -23,28 +23,73 @@ import {
 } from "@/lib/constants";
 import DeleteAlert from "../add-or-edit-transaction/DeleteAlert";
 import UpdateTransaction from "../add-or-edit-transaction/UpdateTransaction";
-import { ArrowDown, ArrowUpDown, SortAsc } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUp01,
+  ArrowUpDown,
+  SortAsc,
+} from "lucide-react";
+import { useTransactionStore } from "@/store/transactionStore";
+import { useState } from "react";
+import { useEffect } from "react";
+
+const sortOrders = {
+  asc: "asc",
+  desc: "desc",
+};
 
 const TransactionList = ({ transactions }) => {
+  const setOneSorter = useTransactionStore((state) => state.setOneSorter);
+
+  const [current, setCurrent] = useState({
+    fieldName: "",
+    order: sortOrders.asc,
+  });
+
+  useEffect(() => {
+    setOneSorter(current.fieldName, current.order);
+  }, [current, setOneSorter]);
+
   return (
     <div className="flex flex-col w-full mb-8 md:mb-0 overflow-hidden rounded-lg border ">
       <Table className="hidden md:table">
         <TableHeader className="*:capitalize">
           <TableRow>
             <TableHead>
-              <Button
-                variant="ghost"
-                className="flex items-center gap-2 p-0 hover:bg-transparent"
-              >
-                {transactionFieldsLabelMapper.category}
-                <ArrowDown size={20} />
-              </Button>
+              <TableHeadWithSortIcon
+                current={current}
+                setCurrent={setCurrent}
+                fieldName={transactionFields.category}
+              />
             </TableHead>
-            <TableHead>{transactionFieldsLabelMapper.description}</TableHead>
-            <TableHead>{transactionFieldsLabelMapper.method}</TableHead>
-            <TableHead>{transactionFieldsLabelMapper.dateAdded}</TableHead>
+            <TableHead>
+              <TableHeadWithSortIcon
+                current={current}
+                setCurrent={setCurrent}
+                fieldName={transactionFields.description}
+              />
+            </TableHead>
+            <TableHead>
+              <TableHeadWithSortIcon
+                current={current}
+                setCurrent={setCurrent}
+                fieldName={transactionFields.method}
+              />
+            </TableHead>
+            <TableHead>
+              <TableHeadWithSortIcon
+                current={current}
+                setCurrent={setCurrent}
+                fieldName={transactionFields.dateAdded}
+              />
+            </TableHead>
             <TableHead className="text-right">
-              {transactionFields.amount}
+              <TableHeadWithSortIcon
+                current={current}
+                setCurrent={setCurrent}
+                fieldName={transactionFields.amount}
+              />
             </TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -114,3 +159,36 @@ const TransactionList = ({ transactions }) => {
 };
 
 export default TransactionList;
+
+function TableHeadWithSortIcon({ setCurrent, current, fieldName }) {
+  return (
+    <Button
+      onClick={() => {
+        setCurrent({
+          fieldName: fieldName,
+          order:
+            current.fieldName === fieldName
+              ? current.order === sortOrders.asc
+                ? sortOrders.desc
+                : sortOrders.asc
+              : sortOrders.asc,
+        });
+      }}
+      variant="ghost"
+      className="flex items-center gap-2 p-0 hover:bg-transparent"
+    >
+      {transactionFieldsLabelMapper[fieldName]}
+      {current.fieldName === fieldName && current.order === sortOrders.asc ? (
+        <ArrowUp
+          className={current.fieldName === fieldName ? "text-primary" : ""}
+          size={20}
+        />
+      ) : (
+        <ArrowDown
+          className={current.fieldName === fieldName ? "text-primary" : ""}
+          size={20}
+        />
+      )}
+    </Button>
+  );
+}

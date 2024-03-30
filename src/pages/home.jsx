@@ -55,7 +55,7 @@ const Home = () => {
     filteredTransactions.sort((a, b) => {
       return (
         orderMap[sorter["order"]] *
-        transactionFieldsComparator[sorter["fieldName"]](a, b)
+        transactionFieldsComparator[sorter["fieldName"]](a[sorter["fieldName"]], b[sorter["fieldName"]])
       );
     });
   }
