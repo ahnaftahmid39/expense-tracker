@@ -53,12 +53,14 @@ const categories = {
   clothes: "Clothes",
   travel: "Travel",
   education: "Education",
-  children: "Children",
   tax: "Tax",
   debt: "Debt",
   charity: "Charity",
   medicine: "Medicine",
   grocery: "Grocery",
+  family: "Family",
+  electronics: "Electronics",
+  others: "Others",
 };
 
 const defaultCategories = Object.keys(categories)

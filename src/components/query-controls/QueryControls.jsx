@@ -21,7 +21,7 @@ import {
   transactionFieldsLabelMapper,
 } from "@/lib/constants";
 import { Button } from "../ui/button";
-import { Delete } from "lucide-react";
+import { CircleX, Delete } from "lucide-react";
 
 const months = {
   0: "January",
@@ -177,10 +177,10 @@ const QueryControls = () => {
             <Button
               onClick={handleRemoveCategoryFilter}
               variant="ghost"
-              className="flex gap-2 my-2 w-full "
+              className="flex items-center gap-2 my-2 justify-start w-full"
             >
-              <Delete />
-              Remove
+              <CircleX />
+              Remove cat
             </Button>
           )}
           <SelectGroup>
@@ -209,7 +209,7 @@ const QueryControls = () => {
               variant="ghost"
               className="flex gap-2 my-2 w-full "
             >
-              <Delete />
+              <CircleX />
               Remove
             </Button>
           )}

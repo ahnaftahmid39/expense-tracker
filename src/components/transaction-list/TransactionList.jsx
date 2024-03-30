@@ -121,7 +121,7 @@ const TransactionList = ({ transactions }) => {
           })}
         </TableBody>
       </Table>
-      <div className="flex flex-col">
+      <div className="flex flex-col overflow-auto">
         {transactions.map((t) => {
           return (
             <Card
@@ -175,7 +175,7 @@ function TableHeadWithSortIcon({ setCurrent, current, fieldName }) {
         });
       }}
       variant="ghost"
-      className="flex items-center gap-2 p-0 hover:bg-transparent"
+      className="gap-2 p-0 hover:bg-transparent"
     >
       {transactionFieldsLabelMapper[fieldName]}
       {current.fieldName === fieldName && current.order === sortOrders.asc ? (
