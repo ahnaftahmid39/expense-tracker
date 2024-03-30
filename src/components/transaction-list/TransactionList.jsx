@@ -41,15 +41,11 @@ const sortOrders = {
 
 const TransactionList = ({ transactions }) => {
   const setOneSorter = useTransactionStore((state) => state.setOneSorter);
-
-  const [current, setCurrent] = useState({
-    fieldName: "",
-    order: sortOrders.asc,
-  });
-
-  useEffect(() => {
-    setOneSorter(current.fieldName, current.order);
-  }, [current, setOneSorter]);
+  const sorters = useTransactionStore((state) => state.sorters);
+  const sorter = sorters[0] || { fieldName: "", order: sortOrders.asc };
+  const handleSetSorter = (s) => {
+    setOneSorter(s.fieldName, s.order);
+  };
 
   return (
     <div className="flex flex-col grow w-full mb-8 md:mb-0 overflow-hidden rounded-lg border ">
@@ -58,36 +54,36 @@ const TransactionList = ({ transactions }) => {
           <TableRow>
             <TableHead>
               <TableHeadWithSortIcon
-                current={current}
-                setCurrent={setCurrent}
+                current={sorter}
+                setCurrent={handleSetSorter}
                 fieldName={transactionFields.category}
               />
             </TableHead>
             <TableHead>
               <TableHeadWithSortIcon
-                current={current}
-                setCurrent={setCurrent}
+                current={sorter}
+                setCurrent={handleSetSorter}
                 fieldName={transactionFields.description}
               />
             </TableHead>
             <TableHead>
               <TableHeadWithSortIcon
-                current={current}
-                setCurrent={setCurrent}
+                current={sorter}
+                setCurrent={handleSetSorter}
                 fieldName={transactionFields.method}
               />
             </TableHead>
             <TableHead>
               <TableHeadWithSortIcon
-                current={current}
-                setCurrent={setCurrent}
+                current={sorter}
+                setCurrent={handleSetSorter}
                 fieldName={transactionFields.dateAdded}
               />
             </TableHead>
             <TableHead className="text-right">
               <TableHeadWithSortIcon
-                current={current}
-                setCurrent={setCurrent}
+                current={sorter}
+                setCurrent={handleSetSorter}
                 fieldName={transactionFields.amount}
               />
             </TableHead>

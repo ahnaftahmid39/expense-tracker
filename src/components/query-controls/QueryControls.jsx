@@ -17,27 +17,14 @@ import { Input } from "../ui/input";
 import {
   defaultCategories,
   defaultPaymentMethods,
+  months,
   timePeriods,
   transactionFields,
-  transactionFieldsLabelMapper,
 } from "@/lib/constants";
 import { Button } from "../ui/button";
 import { CircleX, Delete } from "lucide-react";
 
-const months = {
-  0: "January",
-  1: "February",
-  2: "March",
-  3: "April",
-  4: "May",
-  5: "June",
-  6: "July",
-  7: "August",
-  8: "September",
-  9: "October",
-  10: "November",
-  11: "December",
-};
+
 
 const get5YearsBeforeArray = () => {
   const currentYear = new Date().getFullYear();
@@ -63,14 +50,6 @@ const QueryControls = ({
   const [period, setPeriod] = useState(defaultPeriod);
 
   const setDateQuery = useTransactionStore((state) => state.setDateQuery);
-
-  useEffect(() => {
-    return () => {
-      handleReset();
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     switch (period) {
