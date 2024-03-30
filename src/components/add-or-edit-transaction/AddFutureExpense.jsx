@@ -9,11 +9,18 @@ const AddFutureExpense = () => {
   const addWillSpend = useTransactionStore((state) => state.addWillSpend);
 
   const handleAddTrasaction = (
-    values = { category: "", description: "", amount: "", method: "" }
+    values = {
+      category: "",
+      description: "",
+      amount: "",
+      method: "",
+      dateAdded: "",
+    }
   ) => {
     addWillSpend({
       ...values,
       [transactionFields.id]: uid(),
+      [transactionFields.dateAdded]: new Date(),
     });
 
     toast({
@@ -27,6 +34,7 @@ const AddFutureExpense = () => {
     <AddOrEditTransaction
       title="Add a future expense"
       handleSubmit={handleAddTrasaction}
+      hasDate={false}
     >
       <Button variant={"outline"} className={"md:gap-2"}>
         New

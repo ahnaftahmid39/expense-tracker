@@ -18,7 +18,7 @@ const ControlBar = ({ className = "" }) => {
   const { pathname } = useLocation();
 
   return (
-    <div className={cn("sticky bottom-4", className)}>
+    <div className={cn("sticky bottom-4 ", className)}>
       <NavigationMenu
         className={
           "list-none gap-1 bg-background border shadow border-solid rounded-lg p-2"

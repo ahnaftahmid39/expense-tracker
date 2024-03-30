@@ -24,3 +24,30 @@ export function getRandomHSLAColors(
 
   return colors;
 }
+
+export function getFirstDayFirstMomentOfMonth(monthId, year) {
+  let firstDay = new Date();
+  firstDay.setFullYear(year);
+  firstDay.setMonth(monthId);
+  firstDay.setDate(1);
+  firstDay.setHours(0);
+  firstDay.setMinutes(0);
+  firstDay.setSeconds(0);
+  firstDay.setMilliseconds(0);
+
+  return firstDay;
+}
+
+export function getLastDayLastMomentOfMonth(monthId, year) {
+  let lastDay = new Date();
+  lastDay.setFullYear(year);
+  lastDay.setDate(1); // edge case
+  lastDay.setMonth(monthId + 1);
+  lastDay.setDate(0);
+  lastDay.setHours(23);
+  lastDay.setMinutes(59);
+  lastDay.setSeconds(59);
+  lastDay.setMilliseconds(999);
+
+  return lastDay;
+}

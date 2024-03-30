@@ -14,13 +14,13 @@ const AddTransaction = () => {
   ) => {
     addTransaction({
       ...values,
-      [transactionFields.createdAt]: new Date().toISOString(),
       [transactionFields.id]: uid(),
     });
 
     toast({
       title: "Sucess",
       description: "Added a Transaction",
+      className: "border-primary",
     });
   };
 

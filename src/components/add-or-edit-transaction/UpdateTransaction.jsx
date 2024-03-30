@@ -10,9 +10,14 @@ const UpdateTransaction = ({ transaction }) => {
     (state) => state.updateTransaction
   );
   const handleUpdateTransaction = (
-    values = { category: "", description: "", amount: "", method: "" }
+    values = {
+      category: "",
+      description: "",
+      amount: "",
+      method: "",
+      dateAdded: "",
+    }
   ) => {
-    console.log("handle update");
     updateTransaction({
       ...values,
       [transactionFields.id]: transaction.id,
@@ -20,6 +25,7 @@ const UpdateTransaction = ({ transaction }) => {
     toast({
       title: "Sucess",
       description: "Updated Transaction",
+      className: "border-primary",
     });
   };
 

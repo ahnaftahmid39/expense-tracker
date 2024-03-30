@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { CirclePlus, Edit, PlusCircle } from "lucide-react";
+import { CalendarIcon, CirclePlus, Edit, PlusCircle } from "lucide-react";
 
 import {
   defaultCategories,
@@ -38,24 +38,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { Calendar } from "../ui/calendar";
 
 const transactionSchema = z.object({
   [transactionFields.category]: z.string().min(2).max(20),
   [transactionFields.description]: z.string().max(100).optional(),
   [transactionFields.method]: z.string().min(1, "Method field cannot be empty"),
   [transactionFields.amount]: z.coerce.number().positive(),
+  [transactionFields.dateAdded]: z.coerce.date().optional(),
 });
 
 export function AddOrEditTransaction({
   title = "Add Transaction",
   defaultTransaction,
   handleSubmit,
+  hasDate = true,
   children,
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const closeModal = () => {
     setIsOpen(false);
+    form.reset();
   };
   const handleOpenChange = (open) => {
     setIsOpen(open);
@@ -69,12 +76,15 @@ export function AddOrEditTransaction({
       [transactionFields.description]: defaultTransaction?.description || "",
       [transactionFields.method]: defaultTransaction?.method || "",
       [transactionFields.amount]: defaultTransaction?.amount || 0,
+      [transactionFields.dateAdded]:
+        defaultTransaction?.dateAdded || new Date(),
     },
   });
 
   const onSubmit = (values) => {
     handleSubmit(values);
     closeModal();
+    form.reset();
   };
 
   return (
@@ -199,6 +209,60 @@ export function AddOrEditTransaction({
                 </FormItem>
               )}
             />
+
+            {hasDate && (
+              <FormField
+                control={form.control}
+                name={transactionFields.dateAdded}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>Date of transaction</FormLabel>
+                    <Popover
+                      open={isCalendarOpen}
+                      onOpenChange={setIsCalendarOpen}
+                    >
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              new Date(field.value).toLocaleString(
+                                {},
+                                { dateStyle: "medium" }
+                              )
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={(e) => {
+                            field.onChange(e);
+                            setIsCalendarOpen(false);
+                          }}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1970-01-01")
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
             <DialogFooter>
               <Button onClick={form.reset} type="button" variant="ghost">
                 Reset

@@ -9,8 +9,29 @@ const transactionFields = Object.freeze({
   method: "method",
   description: "description",
   amount: "amount",
-  createdAt: "createdAt",
+  dateAdded: "dateAdded",
 });
+
+const transactionFieldsComparator = {
+  id: (a = "", b = "") => {
+    return a.localeCompare(b);
+  },
+  category: (a = "", b = "") => {
+    return a.localeCompare(b);
+  },
+  method: (a = "", b = "") => {
+    return a.localeCompare(b);
+  },
+  description: (a = "", b = "") => {
+    return a.localeCompare(b);
+  },
+  amount: (a = 0, b = 0) => {
+    return a - b;
+  },
+  dateAdded: (a = "", b = "") => {
+    return new Date(a) - new Date(b);
+  },
+};
 
 const transactionFieldsLabelMapper = Object.freeze({
   id: "ID",
@@ -18,7 +39,7 @@ const transactionFieldsLabelMapper = Object.freeze({
   method: "Payment Method",
   description: "Description",
   amount: "Amount",
-  createdAt: "Date added",
+  dateAdded: "Date added",
 });
 
 const defaultCategories = Object.freeze({
@@ -59,6 +80,7 @@ export {
   THEME_TYPES,
   transactionFields,
   transactionFieldsLabelMapper,
+  transactionFieldsComparator,
   defaultCategories,
   defaultCategoriesArray,
   defaultPaymentMethods,

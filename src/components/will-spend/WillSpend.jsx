@@ -30,7 +30,7 @@ export const BuyItem = ({
           description,
           method,
           amount,
-          createdAt: new Date().toISOString(),
+          dateAdded: new Date().toISOString(),
         });
       }, 500);
     }

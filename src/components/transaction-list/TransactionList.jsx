@@ -23,6 +23,7 @@ import {
 } from "@/lib/constants";
 import DeleteAlert from "../add-or-edit-transaction/DeleteAlert";
 import UpdateTransaction from "../add-or-edit-transaction/UpdateTransaction";
+import { ArrowDown, ArrowUpDown, SortAsc } from "lucide-react";
 
 const TransactionList = ({ transactions }) => {
   return (
@@ -30,10 +31,18 @@ const TransactionList = ({ transactions }) => {
       <Table className="hidden md:table">
         <TableHeader className="*:capitalize">
           <TableRow>
-            <TableHead>{transactionFieldsLabelMapper.category}</TableHead>
+            <TableHead>
+              <Button
+                variant="ghost"
+                className="flex items-center gap-2 p-0 hover:bg-transparent"
+              >
+                {transactionFieldsLabelMapper.category}
+                <ArrowDown size={20} />
+              </Button>
+            </TableHead>
             <TableHead>{transactionFieldsLabelMapper.description}</TableHead>
             <TableHead>{transactionFieldsLabelMapper.method}</TableHead>
-            <TableHead>{transactionFieldsLabelMapper.createdAt}</TableHead>
+            <TableHead>{transactionFieldsLabelMapper.dateAdded}</TableHead>
             <TableHead className="text-right">
               {transactionFields.amount}
             </TableHead>
@@ -52,7 +61,7 @@ const TransactionList = ({ transactions }) => {
                   <Badge>{t.method}</Badge>
                 </TableCell>
                 <TableCell>
-                  {new Date(t.createdAt).toLocaleString(
+                  {new Date(t.dateAdded).toLocaleString(
                     {},
                     { dateStyle: "full" }
                   )}
@@ -86,7 +95,7 @@ const TransactionList = ({ transactions }) => {
                   <div className="text-lg">৳ {t.amount}</div>
                 </div>
                 <div className="text-muted-foreground">
-                  {new Date(t.createdAt).toLocaleString(
+                  {new Date(t.dateAdded).toLocaleString(
                     {},
                     { dateStyle: "full" }
                   )}
