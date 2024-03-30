@@ -17,6 +17,7 @@ import { Input } from "../ui/input";
 import {
   defaultCategories,
   defaultPaymentMethods,
+  timePeriods,
   transactionFields,
   transactionFieldsLabelMapper,
 } from "@/lib/constants";
@@ -47,7 +48,11 @@ const get5YearsBeforeArray = () => {
   return years;
 };
 
-const QueryControls = () => {
+const QueryControls = ({
+  hasPeriodOption = false,
+  customDateQuery = false,
+  defaultPeriod = timePeriods.monthly,
+}) => {
   const currentDate = new Date();
   const currentMonthId = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
@@ -55,15 +60,42 @@ const QueryControls = () => {
 
   const [selectedMonth, setSelectedMonth] = useState(currentMonthId);
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [period, setPeriod] = useState(defaultPeriod);
 
   const setDateQuery = useTransactionStore((state) => state.setDateQuery);
 
   useEffect(() => {
-    setDateQuery(
-      getLastDayLastMomentOfMonth(selectedMonth, selectedYear),
-      getFirstDayFirstMomentOfMonth(selectedMonth, selectedYear)
-    );
-  }, [selectedMonth, selectedYear, setDateQuery]);
+    return () => {
+      handleReset();
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    switch (period) {
+      case timePeriods.all:
+        setDateQuery();
+        break;
+
+      case timePeriods.yearly:
+        setDateQuery(
+          getLastDayLastMomentOfMonth(11, selectedYear),
+          getFirstDayFirstMomentOfMonth(0, selectedYear)
+        );
+        break;
+
+      case timePeriods.monthly:
+        setDateQuery(
+          getLastDayLastMomentOfMonth(selectedMonth, selectedYear),
+          getFirstDayFirstMomentOfMonth(selectedMonth, selectedYear)
+        );
+        break;
+
+      default:
+        break;
+    }
+  }, [period, selectedMonth, selectedYear, setDateQuery]);
 
   const handleChangeMonth = (val) => {
     setSelectedMonth(val);
@@ -110,6 +142,7 @@ const QueryControls = () => {
     setSelectedYear(currentYear);
     setCategory("");
     setMethod("");
+    setPeriod(timePeriods.monthly);
 
     // global store
     clearFilters();
@@ -121,47 +154,80 @@ const QueryControls = () => {
     setSearchText("");
   };
 
+  const handleChangePeriod = (p) => {
+    setPeriod(p);
+  };
+
   return (
     <div className="flex flex-col md:flex-row gap-2 md:gap-4">
-      <Select
-        value={selectedMonth}
-        onValueChange={handleChangeMonth}
-        defaultValue={selectedMonth}
-        autoComplete="true"
-      >
-        <SelectTrigger className="md:max-w-[210px]">
-          <SelectValue placeholder="Select Month" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {Object.values(months).map((monthName, idx) => (
-              <SelectItem key={idx} value={idx} className="capitalize">
-                {`${monthName} ${idx === currentMonthId ? "(Current)" : ""}`}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      {hasPeriodOption && (
+        <Select
+          value={period}
+          onValueChange={handleChangePeriod}
+          defaultValue={period}
+          autoComplete="true"
+        >
+          <SelectTrigger className="md:max-w-[110px] capitalize">
+            <SelectValue placeholder="Select period" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {Object.values(timePeriods).map((period, idx) => (
+                <SelectItem key={idx} value={period} className="capitalize">
+                  {`${period}`}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )}
 
-      <Select
-        value={selectedYear}
-        onValueChange={handleChangeYear}
-        defaultValue={selectedYear}
-        autoComplete="true"
-      >
-        <SelectTrigger className="md:max-w-[180px]">
-          <SelectValue placeholder="Select Month" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {years.map((year, idx) => (
-              <SelectItem key={idx} value={year} className="capitalize">
-                {`${year} ${year === currentYear ? "(Current)" : ""}`}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      {((hasPeriodOption && period === timePeriods.monthly) ||
+        !hasPeriodOption) && (
+        <Select
+          value={selectedMonth}
+          onValueChange={handleChangeMonth}
+          defaultValue={selectedMonth}
+          autoComplete="true"
+        >
+          <SelectTrigger className="md:max-w-[210px]">
+            <SelectValue placeholder="Select Month" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {Object.values(months).map((monthName, idx) => (
+                <SelectItem key={idx} value={idx} className="capitalize">
+                  {`${monthName} ${idx === currentMonthId ? "(Current)" : ""}`}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )}
+
+      {((hasPeriodOption &&
+        (period === timePeriods.yearly || period === timePeriods.monthly)) ||
+        !hasPeriodOption) && (
+        <Select
+          value={selectedYear}
+          onValueChange={handleChangeYear}
+          defaultValue={selectedYear}
+          autoComplete="true"
+        >
+          <SelectTrigger className="md:max-w-[180px]">
+            <SelectValue placeholder="Select Month" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {years.map((year, idx) => (
+                <SelectItem key={idx} value={year} className="capitalize">
+                  {`${year} ${year === currentYear ? "(Current)" : ""}`}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )}
 
       <Select
         value={category}

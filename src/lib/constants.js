@@ -44,7 +44,6 @@ const transactionFieldsLabelMapper = Object.freeze({
 
 const categories = {
   food: "Food",
-  orderFood: "Order Food",
   entertainment: "Entertainment",
   transport: "Transport",
   rent: "Rent",
@@ -85,6 +84,12 @@ const routes = {
   all: "/all",
 };
 
+const timePeriods = Object.freeze({
+  all: "all",
+  yearly: "yearly",
+  monthly: "monthly",
+});
+
 export {
   THEME_TYPES,
   transactionFields,
@@ -93,5 +98,6 @@ export {
   defaultCategories,
   defaultCategoriesArray,
   defaultPaymentMethods,
+  timePeriods,
   routes,
 };

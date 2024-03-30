@@ -52,7 +52,7 @@ const TransactionList = ({ transactions }) => {
   }, [current, setOneSorter]);
 
   return (
-    <div className="flex flex-col w-full mb-8 md:mb-0 overflow-hidden rounded-lg border ">
+    <div className="flex flex-col grow w-full mb-8 md:mb-0 overflow-hidden rounded-lg border ">
       <Table className="hidden md:table">
         <TableHeader className="*:capitalize">
           <TableRow>

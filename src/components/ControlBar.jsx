@@ -21,7 +21,7 @@ const ControlBar = ({ className = "" }) => {
     <div className={cn("sticky bottom-4 ", className)}>
       <NavigationMenu
         className={
-          "list-none gap-1 bg-background border shadow border-solid rounded-lg p-2"
+          "list-none gap-0 bg-background border shadow border-solid rounded-lg p-1 [&_button]:px-3 md:[&_button]:px-4"
         }
       >
         <NavigationMenuItem>
@@ -75,7 +75,7 @@ const ControlBar = ({ className = "" }) => {
               navigate("/all");
             }}
             className={cn(
-              "md:gap-2 after:absolute after:h-2 flex after:bottom-2 after:bg-primary",
+              "md:gap-2 flex",
               pathname === routes.all ? "text-primary" : ""
             )}
             variant={"ghost"}

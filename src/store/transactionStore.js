@@ -127,8 +127,8 @@ export const useTransactionStore = create(
       setDateQuery: (before, after) => {
         set(() => ({
           dateQuery: {
-            before: before || new Date().toISOString(),
-            after: after || new Date(0).toISOString(),
+            before: before || new Date(),
+            after: after || new Date(0),
           },
         }));
       },
