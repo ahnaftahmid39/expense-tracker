@@ -17,6 +17,7 @@ import { Input } from "../ui/input";
 import {
   defaultCategories,
   defaultPaymentMethods,
+  get5YearsBeforeArray,
   months,
   timePeriods,
   transactionFields,
@@ -26,14 +27,7 @@ import { CircleX, Delete } from "lucide-react";
 
 
 
-const get5YearsBeforeArray = () => {
-  const currentYear = new Date().getFullYear();
-  const years = [];
-  for (let year = currentYear - 5; year <= currentYear; year++) {
-    years.push(year);
-  }
-  return years;
-};
+
 
 const QueryControls = ({
   hasPeriodOption = false,

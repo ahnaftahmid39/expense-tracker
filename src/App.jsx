@@ -23,7 +23,7 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col [&>*:nth-child(2)]:flex-1  gap-4 pb-4 items-center container  h-lvh">
+      <div className="flex flex-col [&>*:nth-child(2)]:grow  gap-4 pb-4 items-center container  h-lvh">
         <Toaster />
         <Routes>
           <Route path={routes.home} element={<Home />} />

@@ -1,4 +1,3 @@
-import { mockTransactions } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
 import {
   Card,

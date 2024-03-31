@@ -11,8 +11,8 @@ export const useTransactionStore = create(
       searchText: "",
       shouldPersist: true,
       dateQuery: {
-        before: new Date().toISOString(),
-        after: new Date(0).toISOString(),
+        before: new Date(),
+        after: new Date(0),
       },
 
       addWillSpend: (spend) => {

@@ -104,7 +104,14 @@ const months = {
   10: "November",
   11: "December",
 };
-
+const get5YearsBeforeArray = () => {
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let year = currentYear - 5; year <= currentYear; year++) {
+    years.push(year);
+  }
+  return years;
+};
 export {
   THEME_TYPES,
   transactionFields,
@@ -114,6 +121,7 @@ export {
   defaultCategoriesArray,
   defaultPaymentMethods,
   timePeriods,
+  get5YearsBeforeArray,
   routes,
   months,
 };
