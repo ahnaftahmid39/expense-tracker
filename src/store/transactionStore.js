@@ -15,6 +15,24 @@ export const useTransactionStore = create(
         after: new Date(0),
       },
 
+      addMockTransactions: (mockTransactions = []) => {
+        console.log("Adding mock transactions", mockTransactions)
+        set((state) => ({
+          transactions: [
+            ...state.transactions,
+            ...mockTransactions.map((t) => ({
+              ...t,
+              isMock: true,
+            })),
+          ],
+        }));
+      },
+      removeMockTransactions: () => {
+        set((state) => ({
+          transactions: state.transactions.filter((t) => !t.isMock),
+        }));
+      },
+
       addWillSpend: (spend) => {
         set((state) => ({ willSpend: [...state.willSpend, spend] }));
       },

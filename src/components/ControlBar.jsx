@@ -5,17 +5,43 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
-import { AreaChart, Home, List, Moon, Sun, UserRound } from "lucide-react";
-import { THEME_TYPES, routes } from "@/lib/constants";
+import {
+  AreaChart,
+  Database,
+  Home,
+  List,
+  Moon,
+  Sun,
+  UserRound,
+} from "lucide-react";
+import { THEME_TYPES, mockTransactions, routes } from "@/lib/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import AddTransaction from "./add-or-edit-transaction/AddTransaction";
+import { useTransactionStore } from "@/store/transactionStore";
+import { useState } from "react";
 
 const ControlBar = ({ className = "" }) => {
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const addMockTransactions = useTransactionStore(
+    (state) => state.addMockTransactions
+  );
+  const removeMockTransactions = useTransactionStore(
+    (state) => state.removeMockTransactions
+  );
+
+  const [hasMockTransactions, setHasMockTransactions] = useState(false);
+  const handleMockToggle = () => {
+    if (hasMockTransactions) {
+      removeMockTransactions();
+    } else {
+      addMockTransactions(mockTransactions);
+    }
+    setHasMockTransactions((prev) => !prev);
+  };
 
   return (
     <div className={cn("sticky bottom-4 ", className)}>
@@ -50,6 +76,17 @@ const ControlBar = ({ className = "" }) => {
             )}
           </Button>
         </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Button
+            className={"md:gap-2"}
+            onClick={handleMockToggle}
+            variant={"ghost"}
+          >
+            <Database />
+          </Button>
+        </NavigationMenuItem>
+
         <Separator orientation={"vertical"} className={"h-[24px]"} />
         <NavigationMenuItem>
           <Button
@@ -84,7 +121,7 @@ const ControlBar = ({ className = "" }) => {
             <span className="hidden md:inline self-center">View All</span>
           </Button>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Button
             onClick={() => {
               navigate("auth");
@@ -98,7 +135,7 @@ const ControlBar = ({ className = "" }) => {
             <UserRound />
             <span className="hidden md:inline">Auth</span>
           </Button>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
         <NavigationMenuItem>
           <Button
             onClick={() => {

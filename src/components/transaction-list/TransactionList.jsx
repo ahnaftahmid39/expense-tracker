@@ -90,6 +90,16 @@ const TransactionList = ({ transactions }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
+          {transactions.length === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={6}
+                className="text-center text-muted-foreground"
+              >
+                {"No transactions found"}
+              </TableCell>
+            </TableRow>
+          )}
           {transactions.map((t) => {
             return (
               <TableRow key={t.id} className="odd:bg-card">

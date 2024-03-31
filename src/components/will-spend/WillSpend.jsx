@@ -90,9 +90,14 @@ const WillSpend = () => {
     <div className="flex flex-col flex-1 gap-2 bg-card border p-2 rounded-lg">
       <div className="p-4 flex py-2 text-xl justify-between font-medium">
         <span>Will spend later</span>
-        <Maximize className="self-center" strokeWidth={1} />
+        {/* <Maximize className="self-center" strokeWidth={1} /> */}
       </div>
       <div className="relative flex flex-col gap-2 bg-background border rounded-lg p-2  flex-1 overflow-auto">
+        {willSpend.length === 0 && (
+          <div className="p-2 min-h-[220px] my-auto text-center text-muted-foreground">
+            {"Add new future expense with the button below"}
+          </div>
+        )}
         {willSpend.map((ws) => {
           return (
             <BuyItem
