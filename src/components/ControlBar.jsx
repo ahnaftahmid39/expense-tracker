@@ -84,6 +84,9 @@ const ControlBar = ({ className = "" }) => {
             variant={"ghost"}
           >
             <Database />
+            <span className="hidden md:inline">
+              {capitalizeFirstLetter("Toggle Mock")}
+            </span>
           </Button>
         </NavigationMenuItem>
 

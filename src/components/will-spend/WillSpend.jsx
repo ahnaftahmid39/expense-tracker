@@ -89,7 +89,7 @@ const WillSpend = () => {
   return (
     <div className="flex flex-col flex-1 gap-2 bg-card border p-2 rounded-lg">
       <div className="p-4 flex py-2 text-xl justify-between font-medium">
-        <span>Will spend later</span>
+        <span>Future expenses</span>
         {/* <Maximize className="self-center" strokeWidth={1} /> */}
       </div>
       <div className="relative flex flex-col gap-2 bg-background border rounded-lg p-2  flex-1 overflow-auto">
