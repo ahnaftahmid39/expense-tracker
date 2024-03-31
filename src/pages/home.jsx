@@ -7,6 +7,10 @@ import {
   transactionFields,
   transactionFieldsComparator,
 } from "@/lib/constants";
+import {
+  getFirstDayFirstMomentOfMonth,
+  getLastDayLastMomentOfMonth,
+} from "@/lib/utils";
 
 const Home = () => {
   const transactions = useTransactionStore((state) => state.transactions);
@@ -39,6 +43,38 @@ const Home = () => {
     return addedDate <= dateQuery.before && addedDate >= dateQuery.after;
   });
 
+  // this month only
+  const thisMonthTransactions = transactions.filter((t) => {
+    const addedDate = new Date(t.dateAdded);
+    const today = new Date();
+    return (
+      addedDate <=
+        getLastDayLastMomentOfMonth(today.getMonth(), today.getFullYear()) &&
+      addedDate >=
+        getFirstDayFirstMomentOfMonth(today.getMonth(), today.getFullYear())
+    );
+  });
+
+  let thisMonthTotal = 0;
+  thisMonthTransactions.forEach((t) => {
+    thisMonthTotal += t.amount;
+  });
+
+  const pastSevenDaysTransactions = transactions.filter((t) => {
+    const addedDate = new Date(t.dateAdded);
+    const today = new Date();
+    return (
+      addedDate.getFullYear() === today.getFullYear() &&
+      addedDate.getMonth() === today.getMonth() &&
+      today.getDate() - addedDate.getDate() <= 6
+    );
+  });
+
+  let pastSevenDaysTotal = 0;
+  pastSevenDaysTransactions.forEach((t) => {
+    pastSevenDaysTotal += t.amount;
+  });
+
   // if no sorters active
   if (sorters.length === 0) {
     filteredTransactions.sort((a, b) => {
@@ -55,7 +91,10 @@ const Home = () => {
     filteredTransactions.sort((a, b) => {
       return (
         orderMap[sorter["order"]] *
-        transactionFieldsComparator[sorter["fieldName"]](a[sorter["fieldName"]], b[sorter["fieldName"]])
+        transactionFieldsComparator[sorter["fieldName"]](
+          a[sorter["fieldName"]],
+          b[sorter["fieldName"]]
+        )
       );
     });
   }
@@ -63,9 +102,7 @@ const Home = () => {
   // handle multiple filters
   filters.forEach((fltr) => {
     filteredTransactions = filteredTransactions.filter((tx) => {
-      return (
-        fltr["include"] === (fltr["fieldValue"] === tx[fltr["fieldName"]])
-      );
+      return fltr["include"] === (fltr["fieldValue"] === tx[fltr["fieldName"]]);
     });
   });
 
@@ -78,19 +115,19 @@ const Home = () => {
             <div className=" flex flex-col p-2">
               <span className="text-xl">Monthly Total</span>
               <span className="text-muted-foreground text-sm">
-                Total expense of this month
+                Total expense of current month
               </span>
               <span className="text-primary font-semibold text-2xl mt-2">
-                ৳4500
+                ৳{thisMonthTotal}
               </span>
             </div>
             <div className="p-2 flex flex-col">
-              <span className="text-xl">Weekly Total</span>
+              <span className="text-xl">Last 7 Days</span>
               <span className="text-muted-foreground text-sm">
-                Total expense of this month
+                Total expense last 7 days
               </span>
               <span className="mt-2 text-primary font-semibold text-2xl">
-                ৳400
+                ৳{pastSevenDaysTotal}
               </span>
             </div>
           </div>
