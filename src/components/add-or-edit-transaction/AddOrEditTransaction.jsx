@@ -247,12 +247,14 @@ export function AddOrEditTransaction({
                           mode="single"
                           selected={field.value}
                           onSelect={(e) => {
-                            field.onChange(e);
-                            setIsCalendarOpen(false);
+                            if (e !== undefined) {
+                              field.onChange(e);
+                              setIsCalendarOpen(false);
+                            }
                           }}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1970-01-01")
-                          }
+                          // disabled={(date) =>
+                          //   date > new Date() || date < new Date("1970-01-01")
+                          // }
                           initialFocus
                         />
                       </PopoverContent>
