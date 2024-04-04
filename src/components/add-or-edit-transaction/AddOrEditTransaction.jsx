@@ -47,7 +47,10 @@ const transactionSchema = z.object({
   [transactionFields.description]: z.string().max(100).optional(),
   [transactionFields.method]: z.string().min(1, "Method field cannot be empty"),
   [transactionFields.amount]: z.coerce.number().positive(),
-  [transactionFields.dateAdded]: z.coerce.date().optional(),
+  [transactionFields.dateAdded]: z.coerce
+    .date()
+    .max(new Date(), "Can't select future dates")
+    .optional(),
 });
 
 export function AddOrEditTransaction({
