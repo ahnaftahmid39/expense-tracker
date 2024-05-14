@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../../firebase-config";
+import { auth, githubProvider, googleProvider } from "../../../firebase-config";
 import { toast, useToast } from "../ui/use-toast";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -81,15 +81,27 @@ export function UserAuthForm({ className, ...props }) {
 
   const { toast } = useToast();
 
-  const signInWithGoogle = async () => {
+  const signInWithProvider = async (providerName) => {
     try {
       setIsLoading(true);
-      await signInWithPopup(auth, provider);
+      if (providerName === "google") {
+        await signInWithPopup(auth, googleProvider);
+      }
+      if (providerName === "github") {
+        await signInWithPopup(auth, githubProvider);
+      }
     } catch (e) {
       toast({ title: "Error", description: e.message, variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const signInWithGoogle = () => {
+    signInWithProvider("google");
+  };
+  const signInWithGithub = () => {
+    signInWithProvider("github");
   };
 
   return (
@@ -129,7 +141,12 @@ export function UserAuthForm({ className, ...props }) {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Button variant="outline" type="button" disabled={isLoading}>
+        <Button
+          onClick={signInWithGithub}
+          variant="outline"
+          type="button"
+          disabled={isLoading}
+        >
           {isLoading ? (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : (
