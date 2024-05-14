@@ -1,9 +1,20 @@
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/user-auth-form/UserAuthForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
+import { routes } from "@/lib/constants";
+import { useEffect } from "react";
 
 export default function AuthenticationPage() {
+  const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate(routes.profile);
+  }, [user, navigate]);
+  if (user) return null;
+
   return (
     <>
       <div className="container relative h-[800px] flex flex-row items-center justify-center lg:max-w-none sm:px-2 px-0">

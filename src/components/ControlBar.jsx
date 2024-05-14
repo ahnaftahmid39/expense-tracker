@@ -124,7 +124,7 @@ const ControlBar = ({ className = "" }) => {
             <span className="hidden md:inline self-center">View All</span>
           </Button>
         </NavigationMenuItem>
-        {/* <NavigationMenuItem>
+        <NavigationMenuItem>
           <Button
             onClick={() => {
               navigate("auth");
@@ -138,7 +138,7 @@ const ControlBar = ({ className = "" }) => {
             <UserRound />
             <span className="hidden md:inline">Auth</span>
           </Button>
-        </NavigationMenuItem> */}
+        </NavigationMenuItem>
         <NavigationMenuItem>
           <Button
             onClick={() => {

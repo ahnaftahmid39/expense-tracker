@@ -16,7 +16,7 @@ export const useTransactionStore = create(
       },
 
       addMockTransactions: (mockTransactions = []) => {
-        console.log("Adding mock transactions", mockTransactions)
+        console.log("Adding mock transactions", mockTransactions);
         set((state) => ({
           transactions: [
             ...state.transactions,
@@ -27,6 +27,7 @@ export const useTransactionStore = create(
           ],
         }));
       },
+
       removeMockTransactions: () => {
         set((state) => ({
           transactions: state.transactions.filter((t) => !t.isMock),

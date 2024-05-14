@@ -82,6 +82,7 @@ const defaultCategoriesArray = Object.keys(defaultCategories);
 const routes = {
   home: "/",
   auth: "/auth",
+  profile: "/profile",
   analytics: "/analytics",
   all: "/all",
 };
