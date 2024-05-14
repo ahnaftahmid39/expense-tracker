@@ -18,15 +18,6 @@ export default function AuthenticationPage() {
   return (
     <>
       <div className="container relative h-[800px] flex flex-row items-center justify-center lg:max-w-none sm:px-2 px-0">
-        <Link
-          href="/examples/authentication"
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            "absolute right-4 top-4 md:right-8 md:top-8"
-          )}
-        >
-          Login
-        </Link>
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">

@@ -49,8 +49,8 @@ const transactionSchema = z.object({
   [transactionFields.amount]: z.coerce.number().positive(),
   [transactionFields.dateAdded]: z.coerce
     .date()
-    .max(new Date(), "Can't select future dates")
-    .optional(),
+    .optional()
+    .refine((d) => d < new Date(), "Can't select future dates"),
 });
 
 export function AddOrEditTransaction({

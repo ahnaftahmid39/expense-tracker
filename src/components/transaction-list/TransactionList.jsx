@@ -119,7 +119,7 @@ const TransactionList = ({ transactions }) => {
                 <TableCell className="text-right">{t.amount}</TableCell>
                 <TableCell className="text-right flex justify-end">
                   <UpdateTransaction transaction={t} />
-                  <DeleteAlert tid={t.id} />
+                  <DeleteAlert tid={t.id} docId={t.docId} />
                 </TableCell>
               </TableRow>
             );
@@ -153,7 +153,7 @@ const TransactionList = ({ transactions }) => {
               </CardContent>
               <CardFooter>
                 <UpdateTransaction transaction={t} />
-                <DeleteAlert tid={t.id} />
+                <DeleteAlert tid={t.id} docId={t.docId} />
               </CardFooter>
             </Card>
           );

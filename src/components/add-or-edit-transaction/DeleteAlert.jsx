@@ -11,13 +11,35 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/store/authStore";
 import { useTransactionStore } from "@/store/transactionStore";
+import { db } from "../../../firebase-config";
+import { collection, deleteDoc, doc, query, where } from "firebase/firestore";
 import { Trash } from "lucide-react";
+import { useToast } from "../ui/use-toast";
 
-const DeleteAlert = ({ tid }) => {
+const DeleteAlert = ({ tid, docId }) => {
   const removeTransaction = useTransactionStore(
     (state) => state.removeTransaction
   );
+
+  const user = useAuthStore((state) => state.user);
+  const toast = useToast();
+
+  const handleDelete = async () => {
+    if (!user) return;
+    try {
+      await deleteDoc(doc(collection(db, "transactions"), docId));
+      removeTransaction(tid);
+    } catch (e) {
+      console.log(e);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: e.message || "Something is wrong I can feel it",
+      });
+    }
+  };
 
   return (
     <>
@@ -38,9 +60,7 @@ const DeleteAlert = ({ tid }) => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => {
-                removeTransaction(tid);
-              }}
+              onClick={handleDelete}
               className={buttonVariants({ variant: "destructive" })}
             >
               Continue

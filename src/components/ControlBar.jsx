@@ -77,7 +77,7 @@ const ControlBar = ({ className = "" }) => {
           </Button>
         </NavigationMenuItem>
 
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Button
             className={"md:gap-2"}
             onClick={handleMockToggle}
@@ -88,7 +88,7 @@ const ControlBar = ({ className = "" }) => {
               {capitalizeFirstLetter("Toggle Mock")}
             </span>
           </Button>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         <Separator orientation={"vertical"} className={"h-[24px]"} />
         <NavigationMenuItem>

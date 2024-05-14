@@ -9,14 +9,16 @@ import Home from "./pages/home";
 import AuthenticationPage from "./pages/auth";
 import Analytics from "./pages/analytics";
 import Viewall from "./pages/viewall";
-import { auth } from "../firebase-config";
+import { auth, db } from "../firebase-config";
 import { useAuthStore } from "./store/authStore";
 import ProfilePage from "./pages/profile";
-
+import { useTransactionStore } from "./store/transactionStore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 function App() {
   const theme = useThemeStore((state) => state.theme);
   const setUser = useAuthStore((state) => state.setUser);
-  
+  const setTransactions = useTransactionStore((state) => state.setTransactions);
+
   useEffect(() => {
     const { DARK, LIGHT } = THEME_TYPES;
     const root = window.document.documentElement;
@@ -26,10 +28,25 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    return auth.onAuthStateChanged((user) => {
+    return auth.onAuthStateChanged(async (user) => {
       setUser(user);
+      if (user) {
+        const q = query(
+          collection(db, "transactions"),
+          where("userId", "==", user.uid)
+        );
+
+        const transactions = (await getDocs(q)).docs.map((doc) => ({
+          ...doc.data(),
+          dateAdded: doc.data().dateAdded.toDate(),
+          docId: doc.id,
+        }));
+        setTransactions(transactions);
+      } else {
+        setTransactions([]);
+      }
     });
-  }, [setUser]);
+  }, [setUser, setTransactions]);
 
   return (
     <>

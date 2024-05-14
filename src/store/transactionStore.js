@@ -44,6 +44,12 @@ export const useTransactionStore = create(
         }));
       },
 
+      setTransactions: (transactions) => {
+        set(() => ({
+          transactions: transactions,
+        }));
+      },
+
       addTransaction: (transaction) => {
         set((state) => ({
           transactions: [...state.transactions, transaction],

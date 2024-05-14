@@ -47,6 +47,8 @@ export default function ProfilePage() {
             <div className="flex flex-col space-y-2 text-center">
               <div className="flex justify-center self-center gap-2">
                 <img
+                  width={120}
+                  height={120}
                   className={cn(
                     "hover:animate-spin hover:duration-4000 cursor-pointer rounded-full"
                   )}

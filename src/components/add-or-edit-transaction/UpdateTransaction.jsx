@@ -4,12 +4,17 @@ import { AddOrEditTransaction } from "./AddOrEditTransaction";
 import { useTransactionStore } from "@/store/transactionStore";
 import { transactionFields } from "@/lib/constants";
 import { toast } from "../ui/use-toast";
+import { collection, doc, query, updateDoc, where } from "firebase/firestore";
+import { useAuthStore } from "@/store/authStore";
+import { db } from "../../../firebase-config";
 
 const UpdateTransaction = ({ transaction }) => {
   const updateTransaction = useTransactionStore(
     (state) => state.updateTransaction
   );
-  const handleUpdateTransaction = (
+  const user = useAuthStore((state) => state.user);
+
+  const handleUpdateTransaction = async (
     values = {
       category: "",
       description: "",
@@ -18,15 +23,32 @@ const UpdateTransaction = ({ transaction }) => {
       dateAdded: "",
     }
   ) => {
-    updateTransaction({
+    if (!user) return;
+    const updated = {
       ...values,
       [transactionFields.id]: transaction.id,
-    });
-    toast({
-      title: "Sucess",
-      description: "Updated Transaction",
-      className: "border-primary",
-    });
+    };
+    try {
+      await updateDoc(
+        doc(collection(db, "transactions"), transaction.docId),
+        updated
+      );
+
+      updateTransaction(updated);
+
+      toast({
+        title: "Sucess",
+        description: "Updated Transaction",
+        className: "border-primary",
+      });
+    } catch (e) {
+      console.log(e);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: e.message,
+      });
+    }
   };
 
   return (
