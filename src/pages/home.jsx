@@ -1,7 +1,7 @@
 import TransactionList from "@/components/transaction-list/TransactionList";
 import { useTransactionStore } from "@/store/transactionStore";
 
-import WillSpend from "@/components/will-spend/WillSpend";
+import FutureExpense from "@/components/future-expense/FutureExpense";
 import QueryControls from "@/components/query-controls/QueryControls";
 import {
   transactionFields,
@@ -131,7 +131,7 @@ const Home = () => {
               </span>
             </div>
           </div>
-          <WillSpend />
+          <FutureExpense />
         </div>
         <TransactionList transactions={filteredTransactions || []} />
       </div>

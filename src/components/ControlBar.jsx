@@ -12,6 +12,7 @@ import {
   List,
   Moon,
   Sun,
+  UserCheck,
   UserRound,
 } from "lucide-react";
 import { THEME_TYPES, mockTransactions, routes } from "@/lib/constants";
@@ -20,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import AddTransaction from "./add-or-edit-transaction/AddTransaction";
 import { useTransactionStore } from "@/store/transactionStore";
 import { useState } from "react";
+import { useAuthStore } from "@/store/authStore";
 
 const ControlBar = ({ className = "" }) => {
   const theme = useThemeStore((state) => state.theme);
@@ -32,6 +34,8 @@ const ControlBar = ({ className = "" }) => {
   const removeMockTransactions = useTransactionStore(
     (state) => state.removeMockTransactions
   );
+
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const [hasMockTransactions, setHasMockTransactions] = useState(false);
   const handleMockToggle = () => {
@@ -125,19 +129,35 @@ const ControlBar = ({ className = "" }) => {
           </Button>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Button
-            onClick={() => {
-              navigate("auth");
-            }}
-            className={cn(
-              "md:gap-2",
-              pathname === routes.auth ? "text-primary" : ""
-            )}
-            variant={"ghost"}
-          >
-            <UserRound />
-            <span className="hidden md:inline">Auth</span>
-          </Button>
+          {isLoggedIn ? (
+            <Button
+              onClick={() => {
+                navigate("profile");
+              }}
+              className={cn(
+                "md:gap-2",
+                pathname === routes.profile ? "text-primary" : ""
+              )}
+              variant={"ghost"}
+            >
+              <UserCheck />
+              <span className="hidden md:inline">Profile</span>
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                navigate("auth");
+              }}
+              className={cn(
+                "md:gap-2",
+                pathname === routes.auth ? "text-primary" : ""
+              )}
+              variant={"ghost"}
+            >
+              <UserRound />
+              <span className="hidden md:inline">Auth</span>
+            </Button>
+          )}
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Button

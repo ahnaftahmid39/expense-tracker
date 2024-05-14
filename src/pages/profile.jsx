@@ -11,34 +11,29 @@ import { LoaderCircle } from "lucide-react";
 export default function ProfilePage() {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-
-  const [logoutIsLoading, setLogoutIsLoading] = useState(false);
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
 
   useEffect(() => {
     if (!user) navigate(routes.auth);
   }, [user, navigate]);
   if (!user) return null;
 
-  const handleLogout = async () => {
-    setLogoutIsLoading(true);
+  const handleLogOut = async () => {
+    setIsLogoutLoading(true);
     await signOut(auth);
-    setLogoutIsLoading(false);
+    setIsLogoutLoading(false);
   };
 
   return (
     <>
       <div className="container relative h-[800px] flex flex-row items-center justify-center lg:max-w-none sm:px-2 px-0">
         <Button
-          onClick={handleLogout}
+          onClick={handleLogOut}
           variant="ghost"
           className={cn("absolute right-4 top-4 md:right-8 md:top-8")}
         >
-          {logoutIsLoading && (
-            <LoaderCircle
-              size={16}
-              absoluteStrokeWidth={false}
-              className="me-2 animate-spin"
-            />
+          {isLogoutLoading && (
+            <LoaderCircle className="animate-spin me-2" size={16} absoluteStrokeWidth={false}/>
           )}
           Logout
         </Button>

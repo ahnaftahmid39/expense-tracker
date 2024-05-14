@@ -16,14 +16,16 @@ export const BuyItem = ({
   ...props
 }) => {
   const [checked, setChecked] = useState(false);
-  const removeWillSpend = useTransactionStore((state) => state.removeWillSpend);
+  const removeFutureExpense = useTransactionStore(
+    (state) => state.removeFutureExpense
+  );
   const addTransaction = useTransactionStore((state) => state.addTransaction);
 
   useEffect(() => {
     let timeoutId;
     if (checked === true) {
       timeoutId = setTimeout(() => {
-        removeWillSpend(id);
+        removeFutureExpense(id);
         addTransaction({
           id,
           category,
@@ -43,7 +45,7 @@ export const BuyItem = ({
   }, [checked]);
 
   const handleRemove = () => {
-    removeWillSpend(id);
+    removeFutureExpense(id);
   };
 
   return (
@@ -83,8 +85,8 @@ export const BuyItem = ({
   );
 };
 
-const WillSpend = () => {
-  const willSpend = useTransactionStore((state) => state.willSpend);
+const FutureExpense = () => {
+  const futureExpenses = useTransactionStore((state) => state.futureExpenses);
 
   return (
     <div className="flex flex-col flex-1 gap-2 bg-card border p-2 rounded-lg">
@@ -93,12 +95,12 @@ const WillSpend = () => {
         {/* <Maximize className="self-center" strokeWidth={1} /> */}
       </div>
       <div className="relative flex flex-col gap-2 bg-background border rounded-lg p-2  flex-1 overflow-auto">
-        {willSpend.length === 0 && (
+        {futureExpenses.length === 0 && (
           <div className="p-2 min-h-[220px] my-auto text-center text-muted-foreground">
             {"Add new future expense with the button below"}
           </div>
         )}
-        {willSpend.map((ws) => {
+        {futureExpenses.map((ws) => {
           return (
             <BuyItem
               amount={ws.amount}
@@ -116,4 +118,4 @@ const WillSpend = () => {
   );
 };
 
-export default WillSpend;
+export default FutureExpense;

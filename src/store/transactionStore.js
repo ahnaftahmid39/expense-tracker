@@ -5,7 +5,7 @@ export const useTransactionStore = create(
   persist(
     (set, get) => ({
       transactions: [],
-      willSpend: [],
+      futureExpenses: [],
       filters: [],
       sorters: [],
       searchText: "",
@@ -34,13 +34,17 @@ export const useTransactionStore = create(
         }));
       },
 
-      addWillSpend: (spend) => {
-        set((state) => ({ willSpend: [...state.willSpend, spend] }));
+      addFutureExpense: (spend) => {
+        set((state) => ({ futureExpenses: [...state.futureExpenses, spend] }));
+      },
+      
+      setFutureExpenses: (expenses) => {
+        set(() => ({ futureExpenses: expenses }));
       },
 
-      removeWillSpend: (spendId) => {
+      removeFutureExpense: (spendId) => {
         set((state) => ({
-          willSpend: state.willSpend.filter((s) => s.id != spendId),
+          futureExpenses: state.futureExpenses.filter((s) => s.id != spendId),
         }));
       },
 
@@ -172,7 +176,7 @@ export const useTransactionStore = create(
           persistStates = {
             ...persistStates,
             transactions: state.transactions,
-            willSpend: state.willSpend,
+            futureExpenses: state.futureExpenses,
           };
         }
 

@@ -6,7 +6,9 @@ import { uid } from "uid";
 import { toast } from "../ui/use-toast";
 
 const AddFutureExpense = () => {
-  const addWillSpend = useTransactionStore((state) => state.addWillSpend);
+  const addFutureExpense = useTransactionStore(
+    (state) => state.addFutureExpense
+  );
 
   const handleAddTrasaction = (
     values = {
@@ -17,7 +19,7 @@ const AddFutureExpense = () => {
       dateAdded: "",
     }
   ) => {
-    addWillSpend({
+    addFutureExpense({
       ...values,
       [transactionFields.id]: uid(),
       [transactionFields.dateAdded]: new Date(),
