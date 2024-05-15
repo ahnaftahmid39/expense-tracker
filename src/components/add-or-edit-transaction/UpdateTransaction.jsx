@@ -34,7 +34,7 @@ const UpdateTransaction = ({ transaction }) => {
         updated
       );
 
-      updateTransaction(updated);
+      updateTransaction({ updated, docId: transaction.docId });
 
       toast({
         title: "Sucess",

@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useTransactionStore } from "@/store/transactionStore";
 import AddFutureExpense from "../add-or-edit-transaction/AddFutureExpense";
+import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../../firebase-config";
 
 export const BuyItem = ({
   id,
@@ -12,6 +14,7 @@ export const BuyItem = ({
   description,
   method,
   amount,
+  docId,
   className,
   ...props
 }) => {
@@ -22,18 +25,26 @@ export const BuyItem = ({
   const addTransaction = useTransactionStore((state) => state.addTransaction);
 
   useEffect(() => {
+    console.log({ docId });
     let timeoutId;
     if (checked === true) {
-      timeoutId = setTimeout(() => {
-        removeFutureExpense(id);
-        addTransaction({
+      timeoutId = setTimeout(async () => {
+        const transaction = {
           id,
           category,
           description,
           method,
           amount,
           dateAdded: new Date().toISOString(),
-        });
+        };
+
+        // update database
+        await addDoc(collection(db, "transactions"), transaction);
+        await deleteDoc(doc(collection(db, "futureExpenses"), docId));
+
+        // update store
+        removeFutureExpense(id);
+        addTransaction(transaction);
       }, 500);
     }
 
@@ -44,7 +55,8 @@ export const BuyItem = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checked]);
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
+    await deleteDoc(doc(collection(db, "futureExpenses"), docId));
     removeFutureExpense(id);
   };
 
@@ -107,6 +119,7 @@ const FutureExpense = () => {
               method={ws.method}
               category={ws.category}
               description={ws.description}
+              docId={ws.docId}
               id={ws.id}
               key={ws.id}
             />

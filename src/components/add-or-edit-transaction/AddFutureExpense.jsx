@@ -3,14 +3,20 @@ import { AddOrEditTransaction } from "./AddOrEditTransaction";
 import { useTransactionStore } from "@/store/transactionStore";
 import { transactionFields } from "@/lib/constants";
 import { uid } from "uid";
-import { toast } from "../ui/use-toast";
+import { useToast } from "../ui/use-toast";
+import { useAuthStore } from "@/store/authStore";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../../firebase-config";
 
 const AddFutureExpense = () => {
   const addFutureExpense = useTransactionStore(
     (state) => state.addFutureExpense
   );
 
-  const handleAddTrasaction = (
+  const user = useAuthStore((state) => state.user);
+  const toast = useToast();
+
+  const handleAddTrasaction = async (
     values = {
       category: "",
       description: "",
@@ -19,17 +25,35 @@ const AddFutureExpense = () => {
       dateAdded: "",
     }
   ) => {
-    addFutureExpense({
-      ...values,
-      [transactionFields.id]: uid(),
-      [transactionFields.dateAdded]: new Date(),
-    });
+    try {
+      if (!user) throw Error("Login required");
 
-    toast({
-      title: "Sucess",
-      description: "Added new 'will spend later'",
-      className: "border-primary",
-    });
+      const transaction = {
+        ...values,
+        userId: user.uid,
+        [transactionFields.id]: uid(),
+        [transactionFields.dateAdded]: new Date(),
+      };
+
+      const docRef = await addDoc(
+        collection(db, "futureExpenses"),
+        transaction
+      );
+      addFutureExpense({ ...transaction, docId: docRef.id });
+
+      toast({
+        title: "Sucess",
+        description: "Added new 'will spend later'",
+        className: "border-primary",
+      });
+    } catch (e) {
+      toast({
+        title: "Error",
+        description: e.message,
+        className: "border-destructive",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

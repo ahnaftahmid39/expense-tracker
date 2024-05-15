@@ -14,10 +14,16 @@ import { useAuthStore } from "./store/authStore";
 import ProfilePage from "./pages/profile";
 import { useTransactionStore } from "./store/transactionStore";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { useToast } from "./components/ui/use-toast";
 function App() {
   const theme = useThemeStore((state) => state.theme);
   const setUser = useAuthStore((state) => state.setUser);
   const setTransactions = useTransactionStore((state) => state.setTransactions);
+  const setFutureExpenses = useTransactionStore(
+    (state) => state.setFutureExpenses
+  );
+
+  const toast = useToast();
 
   useEffect(() => {
     const { DARK, LIGHT } = THEME_TYPES;
@@ -31,22 +37,44 @@ function App() {
     return auth.onAuthStateChanged(async (user) => {
       setUser(user);
       if (user) {
-        const q = query(
-          collection(db, "transactions"),
-          where("userId", "==", user.uid)
-        );
+        try {
+          const q = query(
+            collection(db, "transactions"),
+            where("userId", "==", user.uid)
+          );
 
-        const transactions = (await getDocs(q)).docs.map((doc) => ({
-          ...doc.data(),
-          dateAdded: doc.data().dateAdded.toDate(),
-          docId: doc.id,
-        }));
-        setTransactions(transactions);
+          const transactions = (await getDocs(q)).docs.map((doc) => ({
+            ...doc.data(),
+            dateAdded: doc.data().dateAdded.toDate(),
+            docId: doc.id,
+          }));
+          setTransactions(transactions);
+
+          const f = query(
+            collection(db, "futureExpenses"),
+            where("userId", "==", user.uid)
+          );
+
+          const futureExpenses = (await getDocs(f)).docs.map((doc) => ({
+            ...doc.data(),
+            dateAdded: doc.data().dateAdded.toDate(),
+            docId: doc.id,
+          }));
+          setFutureExpenses(futureExpenses);
+        } catch (e) {
+          toast({
+            title: "Error",
+            description: e.message,
+            className: "border-destructive",
+            variant: "destructive",
+          });
+        }
       } else {
         setTransactions([]);
+        setFutureExpenses([]);
       }
     });
-  }, [setUser, setTransactions]);
+  }, [setUser, setTransactions, setFutureExpenses, toast]);
 
   return (
     <>

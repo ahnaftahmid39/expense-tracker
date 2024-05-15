@@ -4,7 +4,7 @@ import { AddOrEditTransaction } from "./AddOrEditTransaction";
 import { useTransactionStore } from "@/store/transactionStore";
 import { transactionFields } from "@/lib/constants";
 import { uid } from "uid";
-import { toast } from "../ui/use-toast";
+import { useToast } from "../ui/use-toast";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../../firebase-config";
 import { useAuthStore } from "@/store/authStore";
@@ -12,6 +12,7 @@ import { useAuthStore } from "@/store/authStore";
 const AddTransaction = () => {
   const addTransaction = useTransactionStore((state) => state.addTransaction);
   const user = useAuthStore((state) => state.user);
+  const toast = useToast();
 
   const handleAddTrasaction = async (values) => {
     try {
@@ -22,8 +23,8 @@ const AddTransaction = () => {
         [transactionFields.id]: uid(),
       };
 
-      await addDoc(collection(db, "transactions"), transaction);
-      addTransaction(transaction);
+      const docRef = await addDoc(collection(db, "transactions"), transaction);
+      addTransaction({ ...transaction, docId: docRef.id });
 
       toast({
         title: "Sucess",
