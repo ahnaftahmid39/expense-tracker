@@ -1,4 +1,4 @@
-import { Link, LucideTrash, Maximize, Trash, Trash2 } from "lucide-react";
+import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
@@ -20,8 +20,9 @@ export const BuyItem = ({ fexpense, className, ...props }) => {
       timeoutId = setTimeout(async () => {
         const transaction = {
           ...fexpense,
-          dateAdded: new Date().toISOString(),
+          dateAdded: new Date(),
         };
+        console.log("transferring transaction", { transaction });
         // update database
         try {
           await addDoc(collection(db, "transactions"), transaction);

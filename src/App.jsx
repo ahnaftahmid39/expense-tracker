@@ -45,7 +45,7 @@ function App() {
 
           const transactions = (await getDocs(q)).docs.map((doc) => ({
             ...doc.data(),
-            dateAdded: new Date(doc.data().dateAdded),
+            dateAdded: doc.data().dateAdded.toDate?.() || new Date(doc.data().dateAdded),
             docId: doc.id,
           }));
           setTransactions(transactions);
@@ -57,7 +57,7 @@ function App() {
 
           const futureExpenses = (await getDocs(f)).docs.map((doc) => ({
             ...doc.data(),
-            dateAdded: new Date(doc.data().dateAdded),
+            dateAdded: doc.data().dateAdded.toDate(),
             docId: doc.id,
           }));
           setFutureExpenses(futureExpenses);

@@ -22,7 +22,7 @@ const AddTransaction = () => {
         userId: user.uid,
         [transactionFields.id]: uid(),
       };
-
+      console.log('adding transaction',{ transaction });
       const docRef = await addDoc(collection(db, "transactions"), transaction);
       addTransaction({ ...transaction, docId: docRef.id });
 

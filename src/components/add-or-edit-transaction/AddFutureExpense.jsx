@@ -35,6 +35,9 @@ const AddFutureExpense = () => {
         [transactionFields.dateAdded]: new Date(),
       };
 
+      console.log('adding future expense',{ transaction });
+
+
       const docRef = await addDoc(
         collection(db, "futureExpenses"),
         transaction
