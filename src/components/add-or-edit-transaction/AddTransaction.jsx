@@ -12,7 +12,7 @@ import { useAuthStore } from "@/store/authStore";
 const AddTransaction = () => {
   const addTransaction = useTransactionStore((state) => state.addTransaction);
   const user = useAuthStore((state) => state.user);
-  const toast = useToast();
+  const { toast } = useToast();
 
   const handleAddTrasaction = async (values) => {
     try {

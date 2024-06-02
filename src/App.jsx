@@ -23,7 +23,7 @@ function App() {
     (state) => state.setFutureExpenses
   );
 
-  const toast = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     const { DARK, LIGHT } = THEME_TYPES;
@@ -45,7 +45,7 @@ function App() {
 
           const transactions = (await getDocs(q)).docs.map((doc) => ({
             ...doc.data(),
-            dateAdded: doc.data().dateAdded.toDate(),
+            dateAdded: new Date(doc.data().dateAdded),
             docId: doc.id,
           }));
           setTransactions(transactions);
@@ -57,10 +57,12 @@ function App() {
 
           const futureExpenses = (await getDocs(f)).docs.map((doc) => ({
             ...doc.data(),
-            dateAdded: doc.data().dateAdded.toDate(),
+            dateAdded: new Date(doc.data().dateAdded),
             docId: doc.id,
           }));
           setFutureExpenses(futureExpenses);
+
+          console.log({ transactions, futureExpenses });
         } catch (e) {
           toast({
             title: "Error",

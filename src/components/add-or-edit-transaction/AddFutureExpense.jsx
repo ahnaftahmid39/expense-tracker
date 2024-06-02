@@ -14,7 +14,7 @@ const AddFutureExpense = () => {
   );
 
   const user = useAuthStore((state) => state.user);
-  const toast = useToast();
+  const { toast } = useToast();
 
   const handleAddTrasaction = async (
     values = {

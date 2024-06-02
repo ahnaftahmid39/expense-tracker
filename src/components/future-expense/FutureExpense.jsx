@@ -8,42 +8,32 @@ import AddFutureExpense from "../add-or-edit-transaction/AddFutureExpense";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../../firebase-config";
 
-export const BuyItem = ({
-  id,
-  category,
-  description,
-  method,
-  amount,
-  docId,
-  className,
-  ...props
-}) => {
+export const BuyItem = ({ fexpense, className, ...props }) => {
   const [checked, setChecked] = useState(false);
   const removeFutureExpense = useTransactionStore(
     (state) => state.removeFutureExpense
   );
   const addTransaction = useTransactionStore((state) => state.addTransaction);
-
   useEffect(() => {
-    console.log({ docId });
     let timeoutId;
     if (checked === true) {
       timeoutId = setTimeout(async () => {
         const transaction = {
-          id,
-          category,
-          description,
-          method,
-          amount,
+          ...fexpense,
           dateAdded: new Date().toISOString(),
         };
-
         // update database
-        await addDoc(collection(db, "transactions"), transaction);
-        await deleteDoc(doc(collection(db, "futureExpenses"), docId));
+        try {
+          await addDoc(collection(db, "transactions"), transaction);
+          await deleteDoc(
+            doc(collection(db, "futureExpenses"), fexpense.docId)
+          );
+        } catch (e) {
+          console.log(e);
+        }
 
         // update store
-        removeFutureExpense(id);
+        removeFutureExpense(fexpense.id);
         addTransaction(transaction);
       }, 500);
     }
@@ -56,8 +46,12 @@ export const BuyItem = ({
   }, [checked]);
 
   const handleRemove = async () => {
-    await deleteDoc(doc(collection(db, "futureExpenses"), docId));
-    removeFutureExpense(id);
+    try {
+      await deleteDoc(doc(collection(db, "futureExpenses"), fexpense.docId));
+      removeFutureExpense(fexpense.id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -67,7 +61,7 @@ export const BuyItem = ({
     >
       <div className="flex p-2 gap-4 lg:max-w-[30ch] text-ellipsis items-center">
         <p className="whitespace-nowrap overflow-hidden text-ellipsis">
-          {description}
+          {fexpense.description}
         </p>
       </div>
       <div className="flex gap-4  px-2 items-center">
@@ -84,7 +78,7 @@ export const BuyItem = ({
           />
           <span className="text-muted-foreground text-sm">Spent</span>
         </div>
-        <span className="text-primary ml-auto">৳{amount}</span>
+        <span className="text-primary ml-auto">৳{fexpense.amount}</span>
         <Button
           onClick={handleRemove}
           variant="ghost"
@@ -113,17 +107,7 @@ const FutureExpense = () => {
           </div>
         )}
         {futureExpenses.map((ws) => {
-          return (
-            <BuyItem
-              amount={ws.amount}
-              method={ws.method}
-              category={ws.category}
-              description={ws.description}
-              docId={ws.docId}
-              id={ws.id}
-              key={ws.id}
-            />
-          );
+          return <BuyItem fexpense={ws} key={ws.id} />;
         })}
       </div>
       <AddFutureExpense />

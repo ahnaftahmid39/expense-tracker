@@ -63,6 +63,7 @@ const Home = () => {
   const pastSevenDaysTransactions = transactions.filter((t) => {
     const addedDate = new Date(t.dateAdded);
     const today = new Date();
+    // FIXME: this is a bug. Past 7 days shouldn't reset due month or year change
     return (
       addedDate.getFullYear() === today.getFullYear() &&
       addedDate.getMonth() === today.getMonth() &&

@@ -24,7 +24,7 @@ const DeleteAlert = ({ tid, docId }) => {
   );
 
   const user = useAuthStore((state) => state.user);
-  const toast = useToast();
+  const { toast } = useToast();
 
   const handleDelete = async () => {
     if (!user) return;
